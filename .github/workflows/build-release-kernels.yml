@@ -51,7 +51,7 @@ jobs:
       os: ${{ matrix.os }}
     needs: [check-for-newer-kernel]
     if: |
-      github.ref == 'refs/heads/master' &&
+      github.ref == 'refs/heads/main' &&
       needs.check-for-newer-kernel.outputs.new_kernel == '0'
 
   make-release:
