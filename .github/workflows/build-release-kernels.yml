@@ -1,0 +1,131 @@
+name: Build & Release Latest Kernel
+on:
+  schedule:
+    - cron: '15 */12 * * *' # “At minute 15 past every 12th hour.”
+  workflow_dispatch:
+    
+jobs:
+  check-for-newer-kernel:
+    runs-on: ubuntu-latest
+    outputs:
+      new_kernel: ${{ steps.check_for_new_kernel.outputs.new_kernel }}
+      latest_kernel: ${{ steps.check_for_new_kernel.outputs.latest_kernel }}
+    steps:
+      - name: Checkount linux-tkg
+        uses: actions/checkout@v3.0.2
+      # Get latest release in repo, so we compare its version
+      # with the latest kernel available so far
+      - name: Get latest release
+        id: latest_release
+        uses: pozetroninc/github-action-get-latest-release@master
+        with:
+          repository: ${{ github.repository }}
+        # it fails when there's no release
+        continue-on-error: true
+      - name: Get latest kernel version
+        id: check_for_new_kernel
+        run: |
+          ./.github/get_latest_kver.sh
+          latest_kernel="$(cat .github/latest-kernel)"
+          echo "latest_kernel=$latest_kernel" >> $GITHUB_OUTPUT
+          new_kernel=0
+          [[ "$latest_kernel" != "$latest_release" ]] || new_kernel=$?
+          echo "new_kernel=$new_kernel" >> $GITHUB_OUTPUT
+        env:
+          latest_release: ${{ steps.latest_release.outputs.release }}
+
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        _cpusched: [bore, eevdf, pds, bmq]
+        os: [arch, ubuntu, fedora]
+    uses: ./.github/workflows/builder-dispatcher.yml
+    with:
+      _cpusched: ${{ matrix._cpusched }}
+      os: ${{ matrix.os }}
+    needs: [check-for-newer-kernel]
+    if: |
+      github.ref == 'refs/heads/master' &&
+      needs.check-for-newer-kernel.outputs.new_kernel == '0'
+
+  make-release:
+    env:
+      max_old_release: 20
+    runs-on: ubuntu-latest
+    needs:
+      - "check-for-newer-kernel"
+      - "build"
+    steps:
+      - name: Download release artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Checkount linux-tkg
+        uses: actions/checkout@v4
+        with:
+          path: linux-tkg-repo
+
+      - name: Delete old kernel
+        run: |
+          max_files=${{ max_old_release:-20 }}
+
+          declare -A directories=(
+            ["linux-tkg-repo/archlinux/x86_64"]="grep linux | grep -v headers"
+            ["linux-tkg-repo/archlinux/x86_64"]="grep linux | grep headers"
+            ["linux-tkg-repo/debian/amd64"]="grep linux-image"
+            ["linux-tkg-repo/debian/amd64"]="grep linux-headers"
+            ["linux-tkg-repo/fedora/x86_64"]="grep kernel | grep -v devel"
+            ["linux-tkg-repo/fedora/x86_64"]="grep kernel-devel"
+          )
+          
+          for directory in "${!directories[@]}"; do
+            filter_pattern="${directories[$directory]}"
+
+            files=($(ls -1 | eval "$filter_pattern" | sort))
+          
+            if [ "${#files[@]}" -gt "$max_files" ]; then
+              excess_files=( "${files[@]:$max_files}" )
+              for file in "${excess_files[@]}"; do
+                rm -f "$directory/$file"
+                echo "Deleted kernel file in $directory: $file"
+              done
+              echo "Deleted kernel files in $directory matching pattern: $filter_pattern"
+            fi
+          done
+
+      - name: Push new kernel release
+        run: |
+          cp ${{ github.workspace }}/arch-kernel-packages-*/linux*.pkg.tar.zst    linux-tkg-repo/archlinux/x86_64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-*/*.deb               linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/fedora-kernel-packages-*/*.rpm               linux-tkg-repo/fedora/x86_64/
+          cd linux-tkg-repo
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push new kernel version"
+          git push
+          
+      - name: Make new release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ needs.check-for-newer-kernel.outputs.latest_kernel }}
+          prerelease: false
+          title: "[experimental] ${{ needs.check-for-newer-kernel.outputs.latest_kernel }}"
+          files: |
+            ${{ github.workspace }}/arch-kernel-packages-*/**
+            ${{ github.workspace }}/ubuntu-kernel-packages-*/**
+            ${{ github.workspace }}/fedora-kernel-packages-*/**
+
+  build-list:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [arch, ubuntu, fedora]
+    uses: ./.github/workflows/list-builder-dispatcher.yml
+    with:
+      os: ${{ matrix.os }}
+    needs:
+      - "check-for-newer-kernel"
+      - "build"
+      - "make-release"
