@@ -70,9 +70,7 @@ jobs:
         run: rm -rf RPMS/*kernel-headers*.rpm
 
       - name: rename kernel config
-        run: |
-          mv kernelconfig.new kernelconfig.fedora.${{ env._cpusched }}.txt
-          rename 's/.x86_64//' ${{ github.workspace }}/RPMS/*.rpm
+        run: mv kernelconfig.new kernelconfig.fedora.${{ env._cpusched }}.txt
 
       - uses: actions/upload-artifact@v4
         with:

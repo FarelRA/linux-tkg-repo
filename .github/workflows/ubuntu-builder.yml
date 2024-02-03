@@ -59,9 +59,7 @@ jobs:
         run: rm -rf DEBS/*dbg*.deb DEBS/*libc-dev*.deb
 
       - name: rename kernel config
-        run: |
-          mv kernelconfig.new kernelconfig.ubuntu.${{ env._cpusched }}.txt
-          rename 's/_amd64//' ${{ github.workspace }}/DEBS/*.deb
+        run: mv kernelconfig.new kernelconfig.ubuntu.${{ env._cpusched }}.txt
 
       - uses: actions/upload-artifact@v4
         with:

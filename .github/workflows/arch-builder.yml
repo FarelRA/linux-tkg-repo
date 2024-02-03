@@ -75,10 +75,8 @@ jobs:
         #   mkdir -p "$PKGDEST"
         #   echo "test" > "$PKGDEST"/linux-$_cpusched.pkg.tar.zst
 
-      - name: rename kernel
-        run: |
-          mv kernelconfig.new kernelconfig.arch.${{ env._cpusched }}.txt
-          rename 's/-x86_64//' ${{ env.PKGDEST }}/linux*.pkg.tar.zst        
+      - name: rename kernel config
+        run: mv kernelconfig.new kernelconfig.arch.${{ env._cpusched }}.txt
 
       - uses: actions/upload-artifact@v4
         with:
