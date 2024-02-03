@@ -19,34 +19,65 @@ This repository provides mirrors and downloads for the Frogging-Family's Kernel,
 
 *Notes: Test it yourself to get accurate results*
 
-## Adding Repository
+## Installation
 
 ### Arch Linux
 
-- Add this repository at the and of your `/etc/pacman.conf`
+Add the repository to your system, then install the kernel package using your package manager.
+
+- Add this line at the and of your `/etc/pacman.conf`
 ```
 [linux-tkg]
 Server = https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/archlinux/x86_64
 ```
-
 - Update your local database with `pacman -Syy`
 - Install the kernel with `pacman -S` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
 
-### Ubuntu
+*Update your system as usual to receive new kernel builds.*
 
+### Debian/Ubuntu
 
-GitHub Releases: Download the pre-built kernel package and install it using your distro's package manager.
-Repository: Add the repository to your system, then install the kernel package using your package manager.
-3. Updating:
+Add the repository to your system, then install the kernel package using your package manager.
 
-If using GitHub releases, download and install updated packages as needed.
-If using the repository, update your system as usual to receive new kernel builds.
+- Add this line at the end of your `/etc/apt/sources.list`
+```
+deb https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/debian/ amd64/
+```
+- Update apt package list with `apt-get update`
+- Install the kernel with `apt-get install` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
 
-## Installation
+*Update your system as usual to receive new kernel builds.*
 
-Arch Linux: sudo pacman -Syu kernel-custom-scheduler (replace scheduler with the desired scheduler)
-Ubuntu: sudo apt-get install linux-custom-scheduler (replace scheduler with the desired scheduler)
-Fedora: sudo dnf install kernel-custom-scheduler (replace scheduler with the desired scheduler)
+### Fedora
+
+Add the repository to your system, then install the kernel package using your package manager.
+
+- Create `/etc/yum.repos.d/linux-tkg.repo` file and add this line
+```
+[Local]
+name=linux-tkg Repository
+baseurl=https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/fedora/x86_64
+gpgcheck=0
+priority=0
+enabled=1
+```
+- Update apt package list with `apt-get update`
+- Install the kernel with `apt-get install` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
+
+*Update your system as usual to receive new kernel builds.*
+
+### By GitHub Releases
+
+Download the pre-built kernel package from GitHub Releases and install it using your distro's package manager.
+
+- Arch Linux: `pacman -U /package/folder/kernel_package.tar.zst`
+- Ubuntu: `dpkg -i /package/folder/kernel_package.deb`
+- Fedora: `dnf install /package/folder/kernel_package.rpm`
+
+*Replace `/package/folder/kernel_package` with the your downloaded package path*
+
+*With this method you have to download and install updated kernel packages manually.*
+
 ## Contributing
 
 We welcome contributions! Please see the CONTRIBUTING.md file for guidelines.
@@ -58,5 +89,3 @@ This project is licensed under the MIT License. See the LICENSE file for details
 ## Disclaimer
 
 Use custom kernels at your own risk. We recommend creating backups and testing in a non-production environment before full deployment.
-
-We hope you enjoy exploring these enhanced schedulers and their impact on your Linux experience!
