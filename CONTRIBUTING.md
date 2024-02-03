@@ -1,6 +1,4 @@
-## CONTRIBUTING
-
-**Welcome to contributing!**
+## Welcome to contributing!
 
 We appreciate your interest in contributing to this project. Your contributions help us build and maintain these custom kernel builds for different schedulers and distributions.
 
