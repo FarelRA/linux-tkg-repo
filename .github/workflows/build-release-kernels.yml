@@ -67,7 +67,7 @@ jobs:
 
       - name: Delete old kernel
         run: |
-          max_files=${{ max_old_release:-20 }}
+          max_files=${{ max_old_release }}
 
           declare -A directories=(
             ["linux-tkg-repo/archlinux/x86_64"]="grep linux | grep -v headers"
