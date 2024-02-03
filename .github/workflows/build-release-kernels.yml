@@ -112,27 +112,36 @@ jobs:
             fi
           done
 
-      - name: Push new kernel release
+      - name: Copy new kernel release
         run: |
           mkdir -p linux-tkg-repo/archlinux/x86_64
           mkdir -p linux-tkg-repo/debian/amd64
           mkdir -p linux-tkg-repo/fedora/x86_64
-          cp ${{ github.workspace }}/arch-kernel-packages-*/linux*.pkg.tar.zst    linux-tkg-repo/archlinux/x86_64/
-          cp ${{ github.workspace }}/ubuntu-kernel-packages-*/*.deb               linux-tkg-repo/debian/amd64/
-          cp ${{ github.workspace }}/fedora-kernel-packages-*/*.rpm               linux-tkg-repo/fedora/x86_64/
-          cd linux-tkg-repo
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Push new kernel version"
-          git push
+          cp ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst      linux-tkg-repo/archlinux/x86_64/
+          cp ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst     linux-tkg-repo/archlinux/x86_64/
+          cp ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst    linux-tkg-repo/archlinux/x86_64/
+          cp ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst      linux-tkg-repo/archlinux/x86_64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb        linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/
+          cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       linux-tkg-repo/fedora/x86_64/
+          cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      linux-tkg-repo/fedora/x86_64/
+          cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/
+
+      - name: Commit new kernel release
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: Commit new kernel release
+          repository: linux-tkg-repo
 
   build-list:
     strategy:
       fail-fast: false
       matrix:
         os: [arch, ubuntu, fedora]
-    uses: ./.github/workflows/list-builder-dispatcher.yml
+    uses: ./.github/workflows/database-builder-dispatcher.yml
     with:
       os: ${{ matrix.os }}
     needs:
