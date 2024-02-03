@@ -27,7 +27,7 @@ env:
   _kernel_source_folder: "/tmp"
   # _modprobeddb: "true"
   _modprobeddb_db_path: ${{ github.workspace }}/modprobed.db
-  _custom_pkgbase: linux-tkg-${{ _cpusched }}
+  _custom_pkgbase: linux-tkg-${{ inputs._cpusched }}
   _custom_commandline: "intel_pstate=passive split_lock_detect=off nowatchdog mitigations=off"
 
 jobs:
