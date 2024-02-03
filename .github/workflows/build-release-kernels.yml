@@ -34,6 +34,7 @@ jobs:
           echo "latest_kernel=$latest_kernel" >> $GITHUB_OUTPUT
           new_kernel=0
           [[ "$latest_kernel" != "$latest_release" ]] || new_kernel=$?
+          echo "new_kernel=$new_kernel"
           echo "new_kernel=$new_kernel" >> $GITHUB_OUTPUT
         env:
           latest_release: ${{ steps.latest_release.outputs.release }}
