@@ -63,6 +63,18 @@ jobs:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
 
+      - name: Make new release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: ${{ needs.check-for-newer-kernel.outputs.latest_kernel }}
+          prerelease: false
+          title: "[experimental] ${{ needs.check-for-newer-kernel.outputs.latest_kernel }}"
+          files: |
+            ${{ github.workspace }}/arch-kernel-packages-*/**
+            ${{ github.workspace }}/ubuntu-kernel-packages-*/**
+            ${{ github.workspace }}/fedora-kernel-packages-*/**
+
       - name: Checkount linux-tkg
         uses: actions/checkout@v4
         with:
@@ -107,18 +119,6 @@ jobs:
           git add .
           git commit -m "Push new kernel version"
           git push
-          
-      - name: Make new release
-        uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: ${{ needs.check-for-newer-kernel.outputs.latest_kernel }}
-          prerelease: false
-          title: "[experimental] ${{ needs.check-for-newer-kernel.outputs.latest_kernel }}"
-          files: |
-            ${{ github.workspace }}/arch-kernel-packages-*/**
-            ${{ github.workspace }}/ubuntu-kernel-packages-*/**
-            ${{ github.workspace }}/fedora-kernel-packages-*/**
 
   build-list:
     strategy:

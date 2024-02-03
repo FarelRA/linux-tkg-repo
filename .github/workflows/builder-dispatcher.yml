@@ -8,6 +8,14 @@ on:
       _cpusched:
         required: true
         type: string
+  workflow_dispatch:
+    inputs:
+      os:
+        required: true
+        type: string
+      _cpusched:
+        required: true
+        type: string
 
 jobs:
   dispatch-to-fedora:
