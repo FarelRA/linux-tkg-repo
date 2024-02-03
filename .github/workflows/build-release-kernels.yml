@@ -28,6 +28,7 @@ jobs:
       - name: Get latest kernel version
         id: check_for_new_kernel
         run: |
+          chmod +x ./.github/get_latest_kver.sh
           ./.github/get_latest_kver.sh
           latest_kernel="$(cat .github/latest-kernel)"
           echo "latest_kernel=$latest_kernel" >> $GITHUB_OUTPUT
