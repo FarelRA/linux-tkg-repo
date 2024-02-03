@@ -3,10 +3,10 @@ on:
   schedule:
     - cron: '15 */12 * * *' # “At minute 15 past every 12th hour.”
   workflow_dispatch:
-
-env:
-  max_old_release: 20
     
+env:
+  max_old_release: "20"
+
 jobs:
   check-for-newer-kernel:
     runs-on: ubuntu-latest
@@ -68,7 +68,7 @@ jobs:
 
       - name: Delete old kernel
         run: |
-          max_files=${{ max_old_release }}
+          max_files=${{ env.max_old_release }}
 
           declare -A directories=(
             ["linux-tkg-repo/archlinux/x86_64"]="grep linux | grep -v headers"
