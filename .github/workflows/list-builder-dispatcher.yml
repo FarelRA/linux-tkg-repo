@@ -16,9 +16,9 @@ env:
   archlinux_repo_dir: "archlinux/x86_64"
   fedora_repo_dir: "fedora/x86_64"
   ubuntu_repo_dir: "debian/amd64"
-  ubuntu_packages_file: "${{ env.ubuntu_repo_dir }}/Packages"
-  ubuntu_release_file: "${{ env.ubuntu_repo_dir }}/Release"
-  ubuntu_inrelease_file: "${{ env.ubuntu_repo_dir }}/InRelease"
+  ubuntu_packages_file: "debian/amd64/Packages"
+  ubuntu_release_file: "debian/amd64/Release"
+  ubuntu_inrelease_file: "debian/amd64/InRelease"
 
 jobs:
   dispatch-to-fedora:
