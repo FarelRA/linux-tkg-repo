@@ -82,6 +82,10 @@ jobs:
 
       - name: Delete old kernel
         run: |
+          mkdir -p linux-tkg-repo/archlinux/x86_64
+          mkdir -p linux-tkg-repo/debian/amd64
+          mkdir -p linux-tkg-repo/fedora/x86_64
+
           max_files=${{ env.max_old_release }}
 
           declare -A directories=(
@@ -110,6 +114,9 @@ jobs:
 
       - name: Push new kernel release
         run: |
+          mkdir -p linux-tkg-repo/archlinux/x86_64
+          mkdir -p linux-tkg-repo/debian/amd64
+          mkdir -p linux-tkg-repo/fedora/x86_64
           cp ${{ github.workspace }}/arch-kernel-packages-*/linux*.pkg.tar.zst    linux-tkg-repo/archlinux/x86_64/
           cp ${{ github.workspace }}/ubuntu-kernel-packages-*/*.deb               linux-tkg-repo/debian/amd64/
           cp ${{ github.workspace }}/fedora-kernel-packages-*/*.rpm               linux-tkg-repo/fedora/x86_64/
