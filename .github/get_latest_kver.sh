@@ -16,11 +16,12 @@ supported_kernels=(
 )
 
 # Define available Git mirrors for the Linux kernel
-kernel_git_remotes=(
-  ['kernel.org']='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git'
-  ['googlesource.com']='https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable'
-  ['github.com']='https://github.com/gregkh/linux.git'
-  ['torvalds']='https://github.com/torvalds/linux.git'
+typeset -Ag _kernel_git_remotes
+_kernel_git_remotes=(
+  ["kernel.org"]="https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git"
+  ["googlesource.com"]="https://kernel.googlesource.com/pub/scm/linux/kernel/git/stable/linux-stable"
+  ["github.com"]="https://github.com/gregkh/linux.git"
+  ["torvalds"]="https://github.com/torvalds/linux.git"
 )
 
 # Select a Git mirror, prioritizing user input and defaulting to github.com
@@ -40,7 +41,7 @@ kernel_tags=$(git -c 'versionsort.suffix=-' \
   | cut --delimiter='/' --fields=3)
 
 # Create a map of kernel versions to their latest tags
-declare -A kver_latest_tags_map
+typeset -Ag _kver_latest_tags_map
 for kver in "${supported_kernels[@]}"; do
   kver_latest_tags_map[$kver]=$(echo "$kernel_tags" | grep -F "v$kver" | tail -1 | cut -c1-)
 done
