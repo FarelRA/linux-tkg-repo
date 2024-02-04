@@ -41,6 +41,7 @@ jobs:
         run: |
           git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
           git pull --rebase      - name: Push updated package list database
+      - name: Commit updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Push updated package list database
@@ -99,6 +100,7 @@ jobs:
         run: |
           git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
           git pull --rebase      - name: Push updated package list database
+      - name: Commit updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Push updated package list database
