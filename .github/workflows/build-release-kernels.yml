@@ -125,10 +125,10 @@ jobs:
           cp ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       linux-tkg-repo/debian/amd64/
           cp ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      linux-tkg-repo/debian/amd64/
           cp ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        linux-tkg-repo/debian/amd64/
-          cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/
-          cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       linux-tkg-repo/fedora/x86_64/
-          cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      linux-tkg-repo/fedora/x86_64/
-          cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/
+          #cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
+          #cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
+          #cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
+          #cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
 
       - name: Commit new kernel release
         uses: stefanzweifel/git-auto-commit-action@v5
@@ -140,7 +140,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [arch, ubuntu, fedora]
+        #os: [arch, ubuntu, fedora]
+        os: [arch, ubuntu] # temporarily disable fedora
     uses: ./.github/workflows/database-builder-dispatcher.yml
     with:
       os: ${{ matrix.os }}

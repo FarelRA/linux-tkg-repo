@@ -50,6 +50,8 @@ deb https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/debian/ amd64/
 
 ### Fedora
 
+***Notes: Fedora repository temporarily disabled due to the size of the built kernel exceeding the GitHub file size limit.***
+
 Add the repository to your system, then install the kernel package using your package manager.
 
 - Create `/etc/yum.repos.d/linux-tkg.repo` file and add this line
