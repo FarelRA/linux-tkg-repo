@@ -108,7 +108,11 @@ jobs:
       - name: Checkount linux-tkg
         uses: actions/checkout@v4
       - name: Update package list database
-        run: repo-add "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz" ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
+        run: |
+          repo-add "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
+          rm ${{ env.archlinux_repo_dir }}/linux-tkg.db                 ${{ env.archlinux_repo_dir }}/linux-tkg.files
+          cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz          ${{ env.archlinux_repo_dir }}/linux-tkg.db
+          cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz       ${{ env.archlinux_repo_dir }}/linux-tkg.files
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database
