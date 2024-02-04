@@ -103,7 +103,7 @@ jobs:
       - name: Checkount linux-tkg
         uses: actions/checkout@v4
       - name: Update package list database
-        run: repo-add "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz" "${{ env.archlinux_repo_dir }}/*.pkg.tar.zst"
+        run: repo-add "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz" ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
       - name: Push updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
