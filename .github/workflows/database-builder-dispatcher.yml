@@ -57,8 +57,8 @@ jobs:
           mkdir -p ${{ env.ubuntu_package_dir }} ${{ env.ubuntu_repo_dir_tmp }}
           mv ${{ env.ubuntu_package_dir }} ${{ env.ubuntu_repo_dir_tmp }} || echo No Package avaliable
           # Setup databases
-          mv ${{ env.ubuntu_repo_dir }}/stable ${{ env.ubuntu_repo_dir }}/lenny
-          ln -s ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
+          mv ${{ env.ubuntu_repo_dir }}/stable ${{ env.ubuntu_repo_dir }}/lenny || echo No old ubuntu repo found
+          ln -s ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable || echo No old ubuntu repo found
           # Create the databases
           debarchiver --addoverride --autoscanall --configfile ./.github/ubuntu_repo.conf
           # Post cleanup
