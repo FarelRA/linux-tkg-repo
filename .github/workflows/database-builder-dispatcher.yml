@@ -64,6 +64,10 @@ jobs:
           # Post cleanup
           rm -rf ${{ env.ubuntu_repo_dir_tmp }}
           # Post setup
+          echo "Parrent ----------"
+          ls
+          echo "${{ env.ubuntu_repo_dir }} ----------"
+          ls ${{ env.ubuntu_repo_dir }}
           rm -rf ${{ env.ubuntu_repo_dir }}/stable
           mv ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
       - name: Add git safe directory
