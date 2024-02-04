@@ -16,9 +16,10 @@ env:
   # Set variables for clarity and maintainability
   archlinux_repo_dir: "archlinux/x86_64"
   fedora_repo_dir: "fedora/x86_64"
-  ubuntu_repo_dir: "debian"
-  ubuntu_repo_dir_tmp: "debian/tmp"
-  ubuntu_package_dir: "debian/packages"
+  ubuntu_repo_dir: "debian/amd64"
+  ubuntu_packages_file: "debian/amd64/Packages"
+  ubuntu_release_file: "debian/amd64/Release"
+  ubuntu_inrelease_file: "debian/amd64/InRelease"
 
 jobs:
   dispatch-to-fedora:
@@ -48,28 +49,44 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install dependencies
-        run: sudo apt-get install -y dpkg-dev gpg debarchiver
+        run: sudo apt-get install -y dpkg-dev gpg
       - name: Checkount linux-tkg-repo
         uses: actions/checkout@v4
       - name: Update package list database
         run: |
-          # Setup environment
-          mkdir -p ${{ env.ubuntu_package_dir }} ${{ env.ubuntu_repo_dir_tmp }}
-          mv ${{ env.ubuntu_package_dir }} ${{ env.ubuntu_repo_dir_tmp }} || echo No Package avaliable
-          # Setup databases
-          mv ${{ env.ubuntu_repo_dir }}/stable ${{ env.ubuntu_repo_dir }}/lenny && \
-          ln -s ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable || echo No old ubuntu repo found
-          # Create the databases
-          debarchiver --addoverride --autoscanall --configfile ./.github/ubuntu_repo.conf
-          # Post cleanup
-          rm -rf ${{ env.ubuntu_repo_dir_tmp }}
-          # Post setup
-          echo "Parrent ----------"
-          ls
-          echo "${{ env.ubuntu_repo_dir }} ----------"
-          ls ${{ env.ubuntu_repo_dir }}
-          #rm -rf ${{ env.ubuntu_repo_dir }}/stable
-          #mv ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
+          # Generate the Packages file
+          dpkg-scanpackages "${{ env.ubuntu_repo_dir }}" /dev/null > "${{ env.ubuntu_packages_file }}" || {
+            echo "Error generating Packages file!" >&2
+            exit 1
+          }
+          gzip -k -f -9 "${{ env.ubuntu_packages_file }}" || {
+            echo "Error compressing Packages file!" >&2
+            exit 1
+          }
+        
+          # Generate the Release file
+          cat ./.github/distributions > "${{ env.ubuntu_release_file }}"  # Optional configuration information
+          echo -e "Date: $(LANG=C date -Ru)" >> "${{ env.ubuntu_release_file }}"
+        
+          # Calculate and add checksums
+          calculate_checksums() {
+            local checksum_type="$1"
+            local checksum_file="$2"
+            local checksum=$("$checksum_type" "$checksum_file" | cut -d' ' -f1)
+            local file_size=$(wc -c "$checksum_file" | cut -d' ' -f1)
+            printf " %s %16d %s\n" "$checksum" "$file_size" "$checksum_file" >> "${{ env.ubuntu_release_file }}"
+          }
+        
+          calculate_checksums "md5sum" "${{ env.ubuntu_packages_file }}.gz"
+          calculate_checksums "md5sum" "${{ env.ubuntu_packages_file }}"
+          calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}.gz"
+          calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}"
+        
+          # Clearsign the Release file
+          gpg --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
+            echo "Error signing Release file!" >&2
+            exit 1
+          }
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database

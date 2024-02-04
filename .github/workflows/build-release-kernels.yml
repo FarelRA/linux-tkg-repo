@@ -82,17 +82,17 @@ jobs:
 
       - name: Delete old kernel
         run: |
-          mkdir -p linux-tkg-repo/debian/stable/main/binary-amd64/kernel
           mkdir -p linux-tkg-repo/archlinux/x86_64
+          mkdir -p linux-tkg-repo/debian/amd64
           mkdir -p linux-tkg-repo/fedora/x86_64
 
           max_files=${{ env.max_old_release }}
 
           declare -A directories=(
-            ["linux-tkg-repo/debian/stable/main/binary-amd64/kernel"]="grep linux-image"
-            ["linux-tkg-repo/debian/stable/main/binary-amd64/kernel"]="grep linux-headers"
             ["linux-tkg-repo/archlinux/x86_64"]="grep linux | grep -v headers"
             ["linux-tkg-repo/archlinux/x86_64"]="grep linux | grep headers"
+            ["linux-tkg-repo/debian/amd64"]="grep linux-image"
+            ["linux-tkg-repo/debian/amd64"]="grep linux-headers"
             ["linux-tkg-repo/fedora/x86_64"]="grep kernel | grep -v devel"
             ["linux-tkg-repo/fedora/x86_64"]="grep kernel-devel"
           )
@@ -115,16 +115,16 @@ jobs:
       - name: Copy new kernel release
         run: |
           mkdir -p linux-tkg-repo/archlinux/x86_64
-          mkdir -p linux-tkg-repo/debian/packages
+          mkdir -p linux-tkg-repo/debian/amd64
           mkdir -p linux-tkg-repo/fedora/x86_64
           cp ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst      linux-tkg-repo/archlinux/x86_64/
           cp ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst     linux-tkg-repo/archlinux/x86_64/
           cp ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst    linux-tkg-repo/archlinux/x86_64/
           cp ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst      linux-tkg-repo/archlinux/x86_64/
-          cp ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb        linux-tkg-repo/debian/packages/
-          cp ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       linux-tkg-repo/debian/packages/
-          cp ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      linux-tkg-repo/debian/packages/
-          cp ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        linux-tkg-repo/debian/packages/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb        linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      linux-tkg-repo/debian/amd64/
+          cp ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        linux-tkg-repo/debian/amd64/
           #cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
           #cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
           #cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      linux-tkg-repo/fedora/x86_64/ # temporarily disable fedora
