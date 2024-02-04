@@ -95,6 +95,7 @@ jobs:
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}"
 
           # Clearsign the Release file
+          rm -f ${{ env.ubuntu_inrelease_file }}
           gpg --batch --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
             echo "Error signing Release file!" >&2
           }
@@ -132,6 +133,7 @@ jobs:
           for package in "${{ env.archlinux_repo_dir }}"/*.pkg.tar.zst; do
             echo "Processing package: $package"
             # Create a detached signature.
+            rm -f "${package}".sig 
             gpg --batch --use-agent --output "${package}".sig --detach-sig "${package}"
           done
           repo-add --sign "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
