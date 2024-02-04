@@ -68,8 +68,8 @@ jobs:
           ls
           echo "${{ env.ubuntu_repo_dir }} ----------"
           ls ${{ env.ubuntu_repo_dir }}
-          rm -rf ${{ env.ubuntu_repo_dir }}/stable
-          mv ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
+          #rm -rf ${{ env.ubuntu_repo_dir }}/stable
+          #mv ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database
