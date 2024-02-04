@@ -37,9 +37,10 @@ jobs:
         run: git status
       - name: Update package list database
         run: createrepo ${{ env.fedora_repo_dir }}
-      - name: Add git safe directory
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-      - name: Push updated package list database
+      - name: Pre commit setup
+        run: |
+          git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
+          git pull --rebase      - name: Push updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Push updated package list database
@@ -94,9 +95,10 @@ jobs:
           gpg --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
             echo "Error signing Release file!" >&2
           }
-      - name: Add git safe directory
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-      - name: Push updated package list database
+      - name: Pre commit setup
+        run: |
+          git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
+          git pull --rebase      - name: Push updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Push updated package list database
@@ -132,9 +134,11 @@ jobs:
           cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.db.sig
           cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz ${{ env.archlinux_repo_dir }}/linux-tkg.files
           cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.files.sig
-      - name: Add git safe directory
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-      - name: Push updated package list database
+      - name: Pre commit setup
+        run: |
+          git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
+          git pull --rebase
+      - name: Commit updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Push updated package list database
