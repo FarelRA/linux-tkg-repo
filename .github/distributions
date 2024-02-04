@@ -4,4 +4,4 @@ Codename: release
 Architectures: amd64
 Components: main
 Description: Releases of linux-tkg kernel
-SignWith: 12345ABC
+SignWith: EABAB7D6EDEBF294
