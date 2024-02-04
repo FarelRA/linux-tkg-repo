@@ -65,8 +65,7 @@ jobs:
           }
         
           # Generate the Release file
-          cat ./.github/distributions > "${{ env.ubuntu_release_file }}"  # Optional configuration information
-          echo -e "Date: $(LANG=C date -Ru)" >> "${{ env.ubuntu_release_file }}"
+          cp ./.github/distributions "${{ env.ubuntu_release_file }}"  # Optional configuration information
         
           # Calculate and add checksums
           calculate_checksums() {
