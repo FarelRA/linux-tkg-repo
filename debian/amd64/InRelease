@@ -1,3 +1,6 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
 Origin: github.com/FarelRA/linux-tkg-repo
 Label: linux-tkg
 Codename: release
@@ -10,3 +13,10 @@ Date: Sun, 04 Feb 2024 15:26:10 +0000
  0ad70724fa8a6968649311f6ec689f28             5528 debian/amd64/Packages
  072d8820746f6c223cde4053bdb6af535c98777d8e21d97d7fa08efaf870eaf9             1448 debian/amd64/Packages.gz
  b525213a0492bbde0f2f45ebd7cbcdc670098616e0891bcbe05981af86090dcc             5528 debian/amd64/Packages
+-----BEGIN PGP SIGNATURE-----
+
+iHUEARYKAB0WIQRYD8WmQ9HdhRY1BMvqurfW7evylAUCZb+skgAKCRDqurfW7evy
+lLpnAQDN8IJumbwjyCsWz2ALtWHckpoyzDKbnp6N28nkZ0xVhQD9Hg8T9q8+2XgP
+rtRRjVTnnv9gFXSsgPCMV8uco8+rGAE=
+=Ljju
+-----END PGP SIGNATURE-----
