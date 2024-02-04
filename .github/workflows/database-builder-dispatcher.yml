@@ -52,8 +52,8 @@ jobs:
         run: sudo apt-get install -y dpkg-dev gpg
       - name: Checkount linux-tkg-repo
         uses: actions/checkout@v4
-        name: Import GPG key
-      - uses: crazy-max/ghaction-import-gpg@v6
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
@@ -113,7 +113,8 @@ jobs:
         run: pacman -Syu --noconfirm git
       - name: Checkount linux-tkg
         uses: actions/checkout@v4
-      - uses: crazy-max/ghaction-import-gpg@v6
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
         with:
           gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
