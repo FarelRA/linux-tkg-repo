@@ -38,13 +38,15 @@ jobs:
       - name: Update package list database
         run: createrepo ${{ env.fedora_repo_dir }}
       - name: Pre commit setup
-        run: |
-          git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-          git pull --rebase      - name: Push updated package list database
+        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Commit updated package list database
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Push updated package list database
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push updated package list database"
+          git pull --rebase
+          git push
 
   dispatch-to-ubuntu:
     if: inputs.os == 'ubuntu'
@@ -97,14 +99,16 @@ jobs:
             echo "Error signing Release file!" >&2
           }
       - name: Pre commit setup
-        run: |
-          git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-          git pull --rebase      - name: Push updated package list database
+        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Commit updated package list database
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Push updated package list database
-
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push updated package list database"
+          git pull --rebase
+          git push
+          
   dispatch-to-arch:
     if: inputs.os == 'arch'
     runs-on: ubuntu-latest
@@ -137,10 +141,12 @@ jobs:
           cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz ${{ env.archlinux_repo_dir }}/linux-tkg.files
           cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.files.sig
       - name: Pre commit setup
-        run: |
-          git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-          git pull --rebase
+        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Commit updated package list database
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Push updated package list database
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push updated package list database"
+          git pull --rebase
+          git push
