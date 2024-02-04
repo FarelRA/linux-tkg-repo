@@ -81,12 +81,6 @@ jobs:
           calculate_checksums "md5sum" "${{ env.ubuntu_packages_file }}"
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}.gz"
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}"
-        
-          # Clearsign the Release file
-          gpg --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
-            echo "Error signing Release file!" >&2
-            exit 1
-          }
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database
