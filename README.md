@@ -1,7 +1,7 @@
 
 # Custom Frogging-Family's Kernel Builds
 
-This repository provides mirrors and downloads for the Frogging-Family's Kernel, we compiled the Kernel from the official Frogging-Family's github repository, with minor modifications to the build files. You can add it as a repo (mirror) on your linux machine, and simply install the built packages, no need to build them yourself.
+This repository provides mirrors and downloads for the Frogging-Family's Kernel, we compiled the Kernel from the official Frogging-Family's github repository, with minor modifications to the build files. You can add this as a repo (mirror) on your linux machine, and simply install the built packages, no need to build them yourself.
 
 ## Features
 
