@@ -1,6 +1,7 @@
 Archive: unstable
 Component: main
-Architecture: amd64 bf9de25a2425eecc0b38f01ba7851994             1448 debian/amd64/Packages.gz
+Architecture: amd64
+ 2eb125eb5e35504cce9c8199a9a2424e             1448 debian/amd64/Packages.gz
  0ad70724fa8a6968649311f6ec689f28             5528 debian/amd64/Packages
- 7eef86bf0cd6cf00e5d260c91098910263b2263694a843a77d34769920e1cf8b             1448 debian/amd64/Packages.gz
+ 0c63ec6d0c435fb6650dc6aa975c723b937dda05f67ccd407fe4600f77beca46             1448 debian/amd64/Packages.gz
  b525213a0492bbde0f2f45ebd7cbcdc670098616e0891bcbe05981af86090dcc             5528 debian/amd64/Packages
