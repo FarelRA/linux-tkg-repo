@@ -1,8 +1,0 @@
-linux-image-6.7.3-tkg-bmq optional kernel
-linux-headers-6.7.3-tkg-eevdf optional kernel
-linux-headers-6.7.3-tkg-bmq optional kernel
-linux-image-6.7.3-tkg-bore optional kernel
-linux-headers-6.7.3-tkg-bore optional kernel
-linux-image-6.7.3-tkg-pds optional kernel
-linux-image-6.7.3-tkg-eevdf optional kernel
-linux-headers-6.7.3-tkg-pds optional kernel
