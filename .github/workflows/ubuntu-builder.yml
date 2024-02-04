@@ -12,6 +12,7 @@ on:
         required: true
         type: string
 
+
 env:
   _waydroid: "true"
   _processor_opt: "generic"
@@ -22,14 +23,13 @@ env:
   _debugdisable: "true"
   _noccache: "true"
   _STRIP: "true"
-  _ftracedisable: "true"
   _kernel_on_diet: "true"
   _kernel_work_folder: "/tmp"
   _kernel_source_folder: "/tmp"
   # _modprobeddb: "true"
   _modprobeddb_db_path: ${{ github.workspace }}/modprobed.db
-  _custom_commandline: "intel_pstate=passive split_lock_detect=off nowatchdog mitigations=off"
 
+  
 jobs:
   build-kernel:
     env:
