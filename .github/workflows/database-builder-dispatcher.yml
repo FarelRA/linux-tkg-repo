@@ -70,7 +70,8 @@ jobs:
           }
         
           # Generate the Release file
-          cp ./.github/distributions "${{ env.ubuntu_release_file }}" && \  # Optional configuration information
+          # Optional configuration information
+          cp ./.github/distributions "${{ env.ubuntu_release_file }}" && \
           echo -e "Date: $(LANG=C date -Ru)" >> "${{ env.ubuntu_release_file }}" || {
             echo "Warning: There is no `distributions` file" >&2
           }
