@@ -54,7 +54,7 @@ Add the repository to your system, then install the kernel package using your pa
 
 - Create `/etc/yum.repos.d/linux-tkg.repo` file and add this line
 ```
-[Local]
+[linux-tkg]
 name=linux-tkg Repository
 baseurl=https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/fedora/x86_64
 gpgcheck=0
