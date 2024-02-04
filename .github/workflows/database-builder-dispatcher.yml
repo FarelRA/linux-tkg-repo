@@ -106,8 +106,9 @@ jobs:
         uses: actions/checkout@v4
       - name: Update package list database
         run: repo-add "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz" ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
-      - name: Push updated package list database
+      - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
+      - name: Push updated package list database
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Push updated package list database
