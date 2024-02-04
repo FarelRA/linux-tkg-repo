@@ -52,6 +52,11 @@ jobs:
         run: sudo apt-get install -y dpkg-dev gpg
       - name: Checkount linux-tkg-repo
         uses: actions/checkout@v4
+        name: Import GPG key
+      - uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Update package list database
         run: |
           # Generate the Packages file
@@ -65,7 +70,10 @@ jobs:
           }
         
           # Generate the Release file
-          cp ./.github/distributions "${{ env.ubuntu_release_file }}"  # Optional configuration information
+          cp ./.github/distributions "${{ env.ubuntu_release_file }}" && \  # Optional configuration information
+          echo -e "Date: $(LANG=C date -Ru)" >> "${{ env.ubuntu_release_file }}" || {
+            echo "Warning: There is no `distributions` file" >&2
+          }
         
           # Calculate and add checksums
           calculate_checksums() {
@@ -80,6 +88,11 @@ jobs:
           calculate_checksums "md5sum" "${{ env.ubuntu_packages_file }}"
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}.gz"
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}"
+
+          # Clearsign the Release file
+          gpg --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
+            echo "Error signing Release file!" >&2
+          }
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database
@@ -100,12 +113,23 @@ jobs:
         run: pacman -Syu --noconfirm git
       - name: Checkount linux-tkg
         uses: actions/checkout@v4
+      - uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
       - name: Update package list database
         run: |
-          repo-add "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
-          rm ${{ env.archlinux_repo_dir }}/linux-tkg.db                 ${{ env.archlinux_repo_dir }}/linux-tkg.files
-          cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz          ${{ env.archlinux_repo_dir }}/linux-tkg.db
-          cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz       ${{ env.archlinux_repo_dir }}/linux-tkg.files
+          for package in "${{ env.archlinux_repo_dir }}"/*.pkg.tar.zst; do
+            echo "Processing package: $package"
+            # Create a detached signature.
+            gpg --use-agent --output "${package}".sig --detach-sig "${package}"
+          done
+          repo-add --sign "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
+          rm ${{ env.archlinux_repo_dir }}/linux-tkg.db ${{ env.archlinux_repo_dir }}/linux-tkg.db.sig ${{ env.archlinux_repo_dir }}/linux-tkg.files ${{ env.archlinux_repo_dir }}/linux-tkg.files.sig
+          cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz ${{ env.archlinux_repo_dir }}/linux-tkg.db
+          cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.db.sig
+          cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz ${{ env.archlinux_repo_dir }}/linux-tkg.files
+          cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.files.sig
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database
