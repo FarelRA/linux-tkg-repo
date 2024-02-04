@@ -28,6 +28,7 @@ Add the repository to your system, then install the kernel package using your pa
 - Add this line at the and of your `/etc/pacman.conf`
 ```
 [linux-tkg]
+SigLevel = Optional
 Server = https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/archlinux/x86_64
 ```
 - Update your local database with `pacman -Syy`
