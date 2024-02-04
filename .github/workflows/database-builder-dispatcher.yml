@@ -16,8 +16,9 @@ env:
   # Set variables for clarity and maintainability
   archlinux_repo_dir: "archlinux/x86_64"
   fedora_repo_dir: "fedora/x86_64"
-  ubuntu_repo_dir: "debian/amd64"
-  ubuntu_repo_dir_tmp: "debian/amd64-tmp"
+  ubuntu_repo_dir: "debian"
+  ubuntu_repo_dir_tmp: "debian/tmp"
+  ubuntu_package_dir: "debian/packages"
 
 jobs:
   dispatch-to-fedora:
@@ -52,10 +53,19 @@ jobs:
         uses: actions/checkout@v4
       - name: Update package list database
         run: |
-          mkdir -p ${{ env.ubuntu_repo_dir }} ${{ env.ubuntu_repo_dir_tmp }}/stable
-          mv ${{ env.ubuntu_repo_dir }}/* ${{ env.ubuntu_repo_dir_tmp }}/stable || echo No Package avaliable
+          # Setup environment
+          mkdir -p ${{ env.ubuntu_package_dir }} ${{ env.ubuntu_repo_dir_tmp }}
+          mv ${{ env.ubuntu_package_dir }} ${{ env.ubuntu_repo_dir_tmp }} || echo No Package avaliable
+          # Setup databases
+          mv ${{ env.ubuntu_repo_dir }}/stable ${{ env.ubuntu_repo_dir }}/lenny
+          ln -s ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
+          # Create the databases
           debarchiver --addoverride --autoscanall --configfile ./.github/ubuntu_repo.conf
+          # Post cleanup
           rm -rf ${{ env.ubuntu_repo_dir_tmp }}
+          # Post setup
+          rm -rf ${{ env.ubuntu_repo_dir }}/stable
+          mv ${{ env.ubuntu_repo_dir }}/lenny ${{ env.ubuntu_repo_dir }}/stable
       - name: Add git safe directory
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Push updated package list database
