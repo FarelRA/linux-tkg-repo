@@ -56,11 +56,12 @@ jobs:
         run: sudo apt-get install -y dpkg-dev gpg
       - name: Checkount linux-tkg-repo
         uses: actions/checkout@v4
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
+      # (Temporaly disable ubuntu repo signing)
+      #- name: Import GPG key
+      #  uses: crazy-max/ghaction-import-gpg@v6
+      #  with:
+      #    gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+      #    passphrase: ${{ secrets.PASSPHRASE }}
       - name: Update package list database
         run: |
           # Generate the Packages file
@@ -94,11 +95,12 @@ jobs:
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}.gz"
           calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}"
 
-          # Clearsign the Release file
-          rm -f ${{ env.ubuntu_inrelease_file }}
-          gpg --batch --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
-            echo "Error signing Release file!" >&2
-          }
+          # (Temporaly disable ubuntu repo signing)
+          ## Clearsign the Release file
+          #rm -f ${{ env.ubuntu_inrelease_file }}
+          #gpg --batch --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
+          #  echo "Error signing Release file!" >&2
+          #}
       - name: Pre commit setup
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Commit updated package list database
