@@ -25,6 +25,11 @@ This repository provides mirrors and downloads for the Frogging-Family's Kernel,
 
 Add the repository to your system, then install the kernel package using your package manager.
 
+- Add the repo GPG key
+```
+pacman-key --recv-key EABAB7D6EDEBF294 --keyserver keyserver.ubuntu.com
+pacman-key --lsign-key EABAB7D6EDEBF294
+```
 - Add this line at the and of your `/etc/pacman.conf`
 ```
 [linux-tkg]
@@ -38,13 +43,15 @@ Server = https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/archlinux
 
 ### Debian/Ubuntu
 
+***Notes: The Ubuntu repository feature is not yet completed.***
+
 Add the repository to your system, then install the kernel package using your package manager.
 
 - Add this line at the end of your `/etc/apt/sources.list`
 ```
 deb https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/debian/ amd64/
 ```
-- Update apt package list with `apt-get update`
+- Update apt package list with `=`
 - Install the kernel with `apt-get install` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
 
 *Update your system as usual to receive new kernel builds.*
@@ -52,6 +59,9 @@ deb https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/debian/ amd64/
 ### Fedora
 
 ***Notes: Fedora repository temporarily disabled due to the size of the built kernel exceeding the GitHub file size limit.***
+
+***Notes: The Fedora repository feature is not yet completed.***
+
 
 Add the repository to your system, then install the kernel package using your package manager.
 
