@@ -33,8 +33,7 @@ pacman-key --lsign-key EABAB7D6EDEBF294
 - Add this line at the and of your `/etc/pacman.conf`
 ```
 [linux-tkg]
-SigLevel = Optional
-Server = https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/archlinux/x86_64
+Server = https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/archlinux/main/x86_64
 ```
 - Update your local database with `pacman -Syy`
 - Install the kernel with `pacman -S` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
@@ -49,9 +48,9 @@ Add the repository to your system, then install the kernel package using your pa
 
 - Add this line at the end of your `/etc/apt/sources.list`
 ```
-deb https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/debian/ amd64/
+deb [trusted=yes] https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/debian/main/x86_64 ./
 ```
-- Update apt package list with `=`
+- Update apt package database with `apt-get update`
 - Install the kernel with `apt-get install` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
 
 *Update your system as usual to receive new kernel builds.*
@@ -69,13 +68,13 @@ Add the repository to your system, then install the kernel package using your pa
 ```
 [linux-tkg]
 name=linux-tkg Repository
-baseurl=https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/fedora/x86_64
+baseurl=https://raw.githubusercontent.com/FarelRA/linux-tkg-repo/main/fedora/main/x86_64
 gpgcheck=0
 priority=0
 enabled=1
 ```
-- Update apt package list with `apt-get update`
-- Install the kernel with `apt-get install` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
+- Update package database with `dnf check-update`
+- Install the kernel with `dnf install` followed by package name (eg. `linux-tkg-bore` or `linux-tkg-eevdf`)
 
 *Update your system as usual to receive new kernel builds.*
 

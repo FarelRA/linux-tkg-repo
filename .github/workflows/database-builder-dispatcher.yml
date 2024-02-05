@@ -14,12 +14,12 @@ on:
 
 env:
   # Set variables for clarity and maintainability
-  archlinux_repo_dir: "archlinux/x86_64"
-  fedora_repo_dir: "fedora/x86_64"
-  ubuntu_repo_dir: "debian/amd64"
-  ubuntu_packages_file: "debian/amd64/Packages"
-  ubuntu_release_file: "debian/amd64/Release"
-  ubuntu_inrelease_file: "debian/amd64/InRelease"
+  arch_repo_dir: "archlinux/main/x86_64"
+  fedora_repo_dir: "fedora/main/x86_64"
+  ubuntu_repo_dir: "debian/main/x86_64"
+  ubuntu_packages_file: "debian/main/x86_64/Packages"
+  ubuntu_release_file: "debian/main/x86_64/Release"
+  ubuntu_inrelease_file: "debian/main/x86_64/InRelease"
 
 jobs:
   dispatch-to-fedora:
@@ -132,18 +132,18 @@ jobs:
           passphrase: ${{ secrets.PASSPHRASE }}
       - name: Update package list database
         run: |
-          for package in "${{ env.archlinux_repo_dir }}"/*.pkg.tar.zst; do
+          for package in "${{ env.arch_repo_dir }}"/*.pkg.tar.zst; do
             echo "Processing package: $package"
             # Create a detached signature.
             rm -f "${package}".sig 
             gpg --batch --use-agent --output "${package}".sig --detach-sig "${package}"
           done
-          repo-add --sign "${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.archlinux_repo_dir }}/*.pkg.tar.zst
-          rm ${{ env.archlinux_repo_dir }}/linux-tkg.db ${{ env.archlinux_repo_dir }}/linux-tkg.db.sig ${{ env.archlinux_repo_dir }}/linux-tkg.files ${{ env.archlinux_repo_dir }}/linux-tkg.files.sig
-          cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz ${{ env.archlinux_repo_dir }}/linux-tkg.db
-          cp ${{ env.archlinux_repo_dir }}/linux-tkg.db.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.db.sig
-          cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz ${{ env.archlinux_repo_dir }}/linux-tkg.files
-          cp ${{ env.archlinux_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.archlinux_repo_dir }}/linux-tkg.files.sig
+          repo-add --sign "${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.arch_repo_dir }}/*.pkg.tar.zst
+          rm ${{ env.arch_repo_dir }}/linux-tkg.db ${{ env.arch_repo_dir }}/linux-tkg.db.sig ${{ env.arch_repo_dir }}/linux-tkg.files ${{ env.arch_repo_dir }}/linux-tkg.files.sig
+          cp ${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz ${{ env.arch_repo_dir }}/linux-tkg.db
+          cp ${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz.sig ${{ env.arch_repo_dir }}/linux-tkg.db.sig
+          cp ${{ env.arch_repo_dir }}/linux-tkg.files.tar.gz ${{ env.arch_repo_dir }}/linux-tkg.files
+          cp ${{ env.arch_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.arch_repo_dir }}/linux-tkg.files.sig
       - name: Pre commit setup
         run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
       - name: Commit updated package list database

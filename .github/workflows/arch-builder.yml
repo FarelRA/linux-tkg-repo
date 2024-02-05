@@ -12,7 +12,6 @@ on:
         required: true
         type: string
 
-        
 env:
   _distro: "Arch"
   _waydroid: "true"
@@ -30,7 +29,6 @@ env:
   _modprobeddb_db_path: ${{ github.workspace }}/modprobed.db
   _custom_pkgbase: linux-tkg-${{ inputs._cpusched }}
 
-  
 jobs:
   build-kernel:
     env:
