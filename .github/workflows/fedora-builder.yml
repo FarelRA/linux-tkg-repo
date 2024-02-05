@@ -1,4 +1,6 @@
 name: Build Fedora kernel
+permissions: write-all
+
 on:
   workflow_call:
     inputs:

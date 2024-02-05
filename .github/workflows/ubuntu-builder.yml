@@ -1,4 +1,6 @@
 name: Build Ubuntu kernel
+permissions: write-all
+
 on:
   workflow_call:
     inputs:

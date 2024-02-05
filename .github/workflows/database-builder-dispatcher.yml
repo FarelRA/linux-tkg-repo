@@ -1,4 +1,5 @@
 name: database builder dispatcher
+permissions: write-all
 
 on:
   workflow_call:

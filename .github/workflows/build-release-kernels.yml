@@ -1,4 +1,6 @@
 name: Build & Release Latest Kernel
+permissions: write-all
+
 on:
   schedule:
     - cron: '15 */12 * * *' # “At minute 15 past every 12th hour.”

@@ -1,4 +1,6 @@
 name: builder dispatcher
+permissions: write-all
+
 on:
   workflow_call:
     inputs:
