@@ -66,19 +66,19 @@ jobs:
       - name: Update package list database
         run: |
           # Generate the Packages file
-          dpkg-scanpackages "${{ env.ubuntu_repo_dir }}" /dev/null > "${{ env.ubuntu_packages_file }}" || {
+          dpkg-scanpackages "./${{ env.ubuntu_repo_dir }}" /dev/null > "./${{ env.ubuntu_packages_file }}" || {
             echo "Error generating Packages file!" >&2
             exit 1
           }
-          gzip -k -f -9 "${{ env.ubuntu_packages_file }}" || {
+          gzip -k -f -9 "./${{ env.ubuntu_packages_file }}" || {
             echo "Error compressing Packages file!" >&2
             exit 1
           }
         
           # Generate the Release file
           # Optional configuration information
-          cp ./.github/distributions "${{ env.ubuntu_release_file }}" && \
-          echo -e "Date: $(LANG=C date -Ru)" >> "${{ env.ubuntu_release_file }}" || {
+          cp ./.github/distributions "./${{ env.ubuntu_release_file }}" && \
+          echo -e "Date: $(LANG=C date -Ru)" >> "./${{ env.ubuntu_release_file }}" || {
             echo "Warning: There is no `distributions` file" >&2
           }
         
@@ -88,13 +88,13 @@ jobs:
             local checksum_file="$2"
             local checksum=$("$checksum_type" "$checksum_file" | cut -d' ' -f1)
             local file_size=$(wc -c "$checksum_file" | cut -d' ' -f1)
-            printf " %s %16d %s\n" "$checksum" "$file_size" "$checksum_file" >> "${{ env.ubuntu_release_file }}"
+            printf " %s %16d %s\n" "$checksum" "$file_size" "$checksum_file" >> "./${{ env.ubuntu_release_file }}"
           }
         
-          calculate_checksums "md5sum" "${{ env.ubuntu_packages_file }}.gz"
-          calculate_checksums "md5sum" "${{ env.ubuntu_packages_file }}"
-          calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}.gz"
-          calculate_checksums "sha256sum" "${{ env.ubuntu_packages_file }}"
+          calculate_checksums "md5sum" "./${{ env.ubuntu_packages_file }}.gz"
+          calculate_checksums "md5sum" "./${{ env.ubuntu_packages_file }}"
+          calculate_checksums "sha256sum" "./${{ env.ubuntu_packages_file }}.gz"
+          calculate_checksums "sha256sum" "./${{ env.ubuntu_packages_file }}"
 
           # (Temporaly disable ubuntu repo signing)
           ## Clearsign the Release file
