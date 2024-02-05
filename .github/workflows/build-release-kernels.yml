@@ -64,6 +64,8 @@ jobs:
 
   make-release:
     runs-on: ubuntu-latest
+    env:
+      checkout_path: "linux-tkg-repo"
     needs:
       - "check-for-newer-kernel"
       - "build"
@@ -86,7 +88,7 @@ jobs:
       - name: Checkount linux-tkg
         uses: actions/checkout@v4.1.1
         with:
-          path: linux-tkg-repo
+          path: ${{ env.checkout_path }}
 
       - name: Delete old kernel
         run: |
@@ -160,6 +162,7 @@ jobs:
 
       - name: Commit new kernel release
         run: |
+          cd ${{ env.checkout_path }}
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add .
