@@ -157,10 +157,13 @@ jobs:
           #cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
 
       - name: Commit new kernel release
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Commit new kernel release
-          repository: linux-tkg-repo
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push updated package list database"
+          git pull --rebase
+          git push
 
   build-database:
     strategy:
