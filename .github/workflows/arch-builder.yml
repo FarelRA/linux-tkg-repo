@@ -48,7 +48,7 @@ jobs:
         run: pacman -Syu --noconfirm git
 
       - name: Checkount linux-tkg
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.1.1
         with:
           repository: 'Frogging-Family/linux-tkg'
 
