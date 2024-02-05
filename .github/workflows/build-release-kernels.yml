@@ -162,7 +162,7 @@ jobs:
           commit_message: Commit new kernel release
           repository: linux-tkg-repo
 
-  build-list:
+  build-database:
     strategy:
       fail-fast: false
       matrix:
