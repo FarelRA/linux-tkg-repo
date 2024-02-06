@@ -186,6 +186,7 @@ jobs:
     uses: ./.github/workflows/database-builder-dispatcher.yml
     with:
       os: ${{ matrix.os }}
+    secrets: inherit
     needs:
       - "check-for-newer-kernel"
       - "build"
