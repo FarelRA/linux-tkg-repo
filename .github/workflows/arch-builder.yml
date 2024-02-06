@@ -105,7 +105,7 @@ jobs:
       - name: Update mirrorlist
         run: |
           pacman -Sy --noconfirm reflector
-          reflector --latest 50 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
+          reflector --latest 50 --protocol http,https --sort delay --save /etc/pacman.d/mirrorlist
 
       - name: Install dependencies
         run: pacman -Syu --noconfirm git
