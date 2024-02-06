@@ -90,6 +90,27 @@ jobs:
         with:
           path: ${{ env.checkout_path }}
 
+      - name: Copy new kernel release
+        run: |
+          # Create directories if they don't exist
+          mkdir -p \
+            ${{ env.arch_main_x86_64 }} \
+            ${{ env.debian_main_x86_64 }} \
+            ${{ env.fedora_main_x86_64 }}
+
+          cp  ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst      ${{ env.arch_main_x86_64 }}
+          cp  ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst     ${{ env.arch_main_x86_64 }}
+          cp  ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst    ${{ env.arch_main_x86_64 }}
+          cp  ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst      ${{ env.arch_main_x86_64 }}
+          cp  ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb        ${{ env.debian_main_x86_64 }}
+          cp  ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       ${{ env.debian_main_x86_64 }}
+          cp  ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      ${{ env.debian_main_x86_64 }}
+          cp  ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        ${{ env.debian_main_x86_64 }}
+          #cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
+          #cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
+          #cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
+          #cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
+
       - name: Delete old kernel
         run: |
           # Set variable
@@ -138,28 +159,7 @@ jobs:
           manage_archive_directory  "${{ env.debian_main_x86_64 }}"       "grep linux-headers"                "mv -f '$directory/$file' ${{ env.debian_archive_x86_64 }}"
           manage_archive_directory  "${{ env.fedora_main_x86_64 }}"       "grep kernel | grep -v devel"       "mv -f '$directory/$file' ${{ env.fedora_archive_x86_64 }}"
           manage_archive_directory  "${{ env.fedora_main_x86_64 }}"       "grep kernel-devel"                 "mv -f '$directory/$file' ${{ env.fedora_archive_x86_64 }}"
-
-      - name: Copy new kernel release
-        run: |
-          # Create directories if they don't exist
-          mkdir -p \
-            ${{ env.arch_main_x86_64 }} \
-            ${{ env.debian_main_x86_64 }} \
-            ${{ env.fedora_main_x86_64 }}
-
-          cp  ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst      ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst     ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst    ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst      ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb        ${{ env.debian_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       ${{ env.debian_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      ${{ env.debian_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        ${{ env.debian_main_x86_64 }}
-          #cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-          #cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-          #cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-          #cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-
+          
       - name: Commit new kernel release
         run: |
           cd ${{ env.checkout_path }}
