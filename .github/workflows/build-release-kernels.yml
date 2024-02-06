@@ -69,6 +69,7 @@ jobs:
     needs:
       - "check-for-newer-kernel"
       - "build"
+
     steps:
       - name: Download release artifacts
         uses: actions/download-artifact@v4
@@ -89,6 +90,14 @@ jobs:
         uses: actions/checkout@v4.1.1
         with:
           path: ${{ env.checkout_path }}
+
+      - name: Post checkuot setup
+        run: |
+          cd ${{ env.checkout_path }}
+          git config --global --add safe.directory `pwd`
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git pull --rebase
 
       - name: Copy new kernel release
         run: |
@@ -163,8 +172,6 @@ jobs:
       - name: Commit new kernel release
         run: |
           cd ${{ env.checkout_path }}
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           git add .
           git commit -m "Push updated package list database"
           git pull --rebase

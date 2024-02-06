@@ -4,19 +4,19 @@ permissions: write-all
 on:
   workflow_call:
     inputs:
-      _cpusched:
-        required: false
+      type:
+        required: true
         type: string
-      database:
+      _cpusched:
         required: false
         type: string
 
   workflow_dispatch: # on button click
       inputs:
-        _cpusched:
-          required: false
+        type:
+          required: true
           type: string
-        database:
+        _cpusched:
           required: false
           type: string
 
@@ -43,6 +43,7 @@ jobs:
     env:
       _cpusched: ${{ inputs._cpusched }}
 
+    if: inputs.type == 'build'
     runs-on: ubuntu-latest
 
     steps:
@@ -82,7 +83,7 @@ jobs:
       ubuntu_release_file: "debian/main/x86_64/Release"
       ubuntu_inrelease_file: "debian/main/x86_64/InRelease"
     
-    if: inputs.database == 'true'
+    if: inputs.type == 'database'
     runs-on: ubuntu-latest
 
     steps:
@@ -91,6 +92,13 @@ jobs:
 
       - name: Checkount linux-tkg-repo
         uses: actions/checkout@v4.1.1
+
+      - name: Post checkuot setup
+        run: |
+          git config --global --add safe.directory `pwd`
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git pull --rebase
 
       # (Temporaly disable ubuntu repo signing)
       #- name: Import GPG key
@@ -138,14 +146,9 @@ jobs:
           #gpg --batch --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
           #  echo "Error signing Release file!" >&2
           #}
-
-      - name: Pre commit setup
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
         
       - name: Commit updated package list database
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           git add .
           git commit -m "Push updated package list database"
           git pull --rebase

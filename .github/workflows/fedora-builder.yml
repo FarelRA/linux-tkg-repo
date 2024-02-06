@@ -4,19 +4,19 @@ permissions: write-all
 on:
   workflow_call:
     inputs:
-      _cpusched:
-        required: false
+      type:
+        required: true
         type: string
-      database:
+      _cpusched:
         required: false
         type: string
 
   workflow_dispatch: # on button click
       inputs:
-        _cpusched:
-          required: false
+        type:
+          required: true
           type: string
-        database:
+        _cpusched:
           required: false
           type: string
 
@@ -43,6 +43,7 @@ jobs:
     env:
       _cpusched: ${{ inputs._cpusched }}
 
+    if: inputs.type == 'build'
     runs-on: ubuntu-latest
     container: fedora:latest
 
@@ -89,7 +90,7 @@ jobs:
     env:
       fedora_repo_dir: "fedora/main/x86_64"
     
-    if: inputs.database == 'true'
+    if: inputs.type == 'database'
     runs-on: ubuntu-latest
     container: fedora:latest
 
@@ -100,8 +101,12 @@ jobs:
       - name: Checkount linux-tkg-repo
         uses: actions/checkout@v4.1.1
 
-      - name: fix git folder ownership
-        run: git config --global --add safe.directory `pwd`
+      - name: Post checkuot setup
+        run: |
+          git config --global --add safe.directory `pwd`
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git pull --rebase
 
       - name: run git status
         run: git status
@@ -109,13 +114,8 @@ jobs:
       - name: Update package list database
         run: createrepo ${{ env.fedora_repo_dir }}
 
-      - name: Pre commit setup
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-
       - name: Commit updated package list database
         run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
           git add .
           git commit -m "Push updated package list database"
           git pull --rebase
