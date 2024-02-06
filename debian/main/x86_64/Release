@@ -1,0 +1,12 @@
+Origin: github.com/FarelRA/linux-tkg-repo
+Label: linux-tkg
+Codename: release
+Architectures: amd64
+Components: main
+Description: Releases of linux-tkg kernel
+SignWith: EABAB7D6EDEBF294
+Date: Tue, 06 Feb 2024 02:24:10 +0000
+ 00c3e7896cd42c96382b2a2bc064b24d             1480 ./debian/main/x86_64/Packages.gz
+ 7592f5153499e51b593ba8d487a9ee9a             5694 ./debian/main/x86_64/Packages
+ 77a746dbd309801160b739fb4ae51d1e65f508846545b256b0a3b9add4f022fd             1480 ./debian/main/x86_64/Packages.gz
+ fdc692727ce2d6854dcf783b80c6ae6ad94d0ddad9e8d1f72fa4b15ac213f006             5694 ./debian/main/x86_64/Packages
