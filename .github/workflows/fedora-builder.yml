@@ -7,13 +7,18 @@ on:
       _cpusched:
         required: true
         type: string
+      database:
+        required: false
+        type: string
 
   workflow_dispatch: # on button click
       inputs:
       _cpusched:
         required: true
         type: string
-        
+      database:
+        required: false
+        type: string
 
 env:
   _waydroid: "true"
@@ -79,3 +84,39 @@ jobs:
           path: |
             ${{ github.workspace }}/RPMS/*.rpm
             kernelconfig*.txt
+
+  build-database:
+    env:
+      fedora_repo_dir: "fedora/main/x86_64"
+    
+    if: inputs.database == 'true'
+    runs-on: ubuntu-latest
+    container: fedora:latest
+
+    steps:
+      - name: Install dependencies
+        run: dnf install git createrepo -y
+
+      - name: Checkount linux-tkg-repo
+        uses: actions/checkout@v4.1.1
+
+      - name: fix git folder ownership
+        run: git config --global --add safe.directory `pwd`
+
+      - name: run git status
+        run: git status
+
+      - name: Update package list database
+        run: createrepo ${{ env.fedora_repo_dir }}
+
+      - name: Pre commit setup
+        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
+
+      - name: Commit updated package list database
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push updated package list database"
+          git pull --rebase
+          git push

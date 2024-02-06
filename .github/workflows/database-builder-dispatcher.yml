@@ -13,145 +13,21 @@ on:
         required: true
         type: string
 
-env:
-  # Set variables for clarity and maintainability
-  arch_repo_dir: "archlinux/main/x86_64"
-  fedora_repo_dir: "fedora/main/x86_64"
-  ubuntu_repo_dir: "debian/main/x86_64"
-  ubuntu_packages_file: "debian/main/x86_64/Packages"
-  ubuntu_release_file: "debian/main/x86_64/Release"
-  ubuntu_inrelease_file: "debian/main/x86_64/InRelease"
-
 jobs:
   dispatch-to-fedora:
+    uses: ./.github/workflows/fedora-builder.yml
+    with:
+      database: 'true'
     if: inputs.os == 'fedora'
-    runs-on: ubuntu-latest
-    container: fedora:latest
-    steps:
-      - name: Install dependencies
-        run: dnf install git createrepo -y
-      - name: Checkount linux-tkg-repo
-        uses: actions/checkout@v4.1.1
-      - name: fix git folder ownership
-        run: git config --global --add safe.directory `pwd`
-      - name: run git status
-        run: git status
-      - name: Update package list database
-        run: createrepo ${{ env.fedora_repo_dir }}
-      - name: Pre commit setup
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-      - name: Commit updated package list database
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Push updated package list database"
-          git pull --rebase
-          git push
 
   dispatch-to-ubuntu:
+    uses: ./.github/workflows/ubuntu-builder.yml
+    with:
+      database: 'true'
     if: inputs.os == 'ubuntu'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Install dependencies
-        run: sudo apt-get install -y dpkg-dev gpg
-      - name: Checkount linux-tkg-repo
-        uses: actions/checkout@v4.1.1
-      # (Temporaly disable ubuntu repo signing)
-      #- name: Import GPG key
-      #  uses: crazy-max/ghaction-import-gpg@v6
-      #  with:
-      #    gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-      #    passphrase: ${{ secrets.PASSPHRASE }}
-      - name: Update package list database
-        run: |
-          # Generate the Packages file
-          dpkg-scanpackages "./${{ env.ubuntu_repo_dir }}" /dev/null > "./${{ env.ubuntu_packages_file }}" || {
-            echo "Error generating Packages file!" >&2
-            exit 1
-          }
-          gzip -k -f -9 "./${{ env.ubuntu_packages_file }}" || {
-            echo "Error compressing Packages file!" >&2
-            exit 1
-          }
-        
-          # Generate the Release file
-          # Optional configuration information
-          cp ./.github/distributions "./${{ env.ubuntu_release_file }}" && \
-          echo -e "Date: $(LANG=C date -Ru)" >> "./${{ env.ubuntu_release_file }}" || {
-            echo "Warning: There is no `distributions` file" >&2
-          }
-        
-          # Calculate and add checksums
-          calculate_checksums() {
-            local checksum_type="$1"
-            local checksum_file="$2"
-            local checksum=$("$checksum_type" "$checksum_file" | cut -d' ' -f1)
-            local file_size=$(wc -c "$checksum_file" | cut -d' ' -f1)
-            printf " %s %16d %s\n" "$checksum" "$file_size" "$checksum_file" >> "./${{ env.ubuntu_release_file }}"
-          }
-        
-          calculate_checksums "md5sum" "./${{ env.ubuntu_packages_file }}.gz"
-          calculate_checksums "md5sum" "./${{ env.ubuntu_packages_file }}"
-          calculate_checksums "sha256sum" "./${{ env.ubuntu_packages_file }}.gz"
-          calculate_checksums "sha256sum" "./${{ env.ubuntu_packages_file }}"
 
-          # (Temporaly disable ubuntu repo signing)
-          ## Clearsign the Release file
-          #rm -f ${{ env.ubuntu_inrelease_file }}
-          #gpg --batch --clearsign --digest-algo SHA512 -o "${{ env.ubuntu_inrelease_file }}" "${{ env.ubuntu_release_file }}" || {
-          #  echo "Error signing Release file!" >&2
-          #}
-      - name: Pre commit setup
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-      - name: Commit updated package list database
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Push updated package list database"
-          git pull --rebase
-          git push
-          
   dispatch-to-arch:
+    uses: ./.github/workflows/arch-builder.yml
+    with:
+      database: 'true'
     if: inputs.os == 'arch'
-    runs-on: ubuntu-latest
-    container: archlinux:latest
-    steps:
-      - name: Update mirrorlist
-        run: |
-          pacman -Sy --noconfirm reflector
-          reflector --latest 50 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
-      - name: Install dependencies
-        run: pacman -Syu --noconfirm git
-      - name: Checkount linux-tkg
-        uses: actions/checkout@v4.1.1
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
-        with:
-          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.PASSPHRASE }}
-      - name: Update package list database
-        run: |
-          for package in "${{ env.arch_repo_dir }}"/*.pkg.tar.zst; do
-            echo "Processing package: $package"
-            # Create a detached signature.
-            rm -f "${package}".sig 
-            gpg --batch --use-agent --output "${package}".sig --detach-sig "${package}"
-          done
-          repo-add --sign "${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.arch_repo_dir }}/*.pkg.tar.zst
-          rm ${{ env.arch_repo_dir }}/linux-tkg.db ${{ env.arch_repo_dir }}/linux-tkg.db.sig ${{ env.arch_repo_dir }}/linux-tkg.files ${{ env.arch_repo_dir }}/linux-tkg.files.sig
-          cp ${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz ${{ env.arch_repo_dir }}/linux-tkg.db
-          cp ${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz.sig ${{ env.arch_repo_dir }}/linux-tkg.db.sig
-          cp ${{ env.arch_repo_dir }}/linux-tkg.files.tar.gz ${{ env.arch_repo_dir }}/linux-tkg.files
-          cp ${{ env.arch_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.arch_repo_dir }}/linux-tkg.files.sig
-      - name: Pre commit setup
-        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
-      - name: Commit updated package list database
-        run: |
-          git config user.name github-actions
-          git config user.email github-actions@github.com
-          git add .
-          git commit -m "Push updated package list database"
-          git pull --rebase
-          git push

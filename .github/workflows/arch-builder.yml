@@ -7,11 +7,17 @@ on:
       _cpusched:
         required: true
         type: string
+      database:
+        required: false
+        type: string
 
   workflow_dispatch: # on button click
       inputs:
       _cpusched:
         required: true
+        type: string
+      database:
+        required: false
         type: string
 
 env:
@@ -85,3 +91,56 @@ jobs:
           path: |
             ${{ env.PKGDEST }}/linux*.pkg.tar.zst
             kernelconfig*.txt
+
+  build-database:
+    env:
+      arch_repo_dir: "archlinux/main/x86_64"
+
+    if: inputs.database == 'true'
+    runs-on: ubuntu-latest
+    container: archlinux:latest
+    
+    steps:
+      - name: Update mirrorlist
+        run: |
+          pacman -Sy --noconfirm reflector
+          reflector --latest 50 --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
+
+      - name: Install dependencies
+        run: pacman -Syu --noconfirm git
+
+      - name: Checkount linux-tkg
+        uses: actions/checkout@v4.1.1
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+
+      - name: Update package list database
+        run: |
+          for package in "${{ env.arch_repo_dir }}"/*.pkg.tar.zst; do
+            echo "Processing package: $package"
+            # Create a detached signature.
+            rm -f "${package}".sig 
+            gpg --batch --use-agent --output "${package}".sig --detach-sig "${package}"
+          done
+          repo-add --sign "${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz"  ${{ env.arch_repo_dir }}/*.pkg.tar.zst
+          rm ${{ env.arch_repo_dir }}/linux-tkg.db ${{ env.arch_repo_dir }}/linux-tkg.db.sig ${{ env.arch_repo_dir }}/linux-tkg.files ${{ env.arch_repo_dir }}/linux-tkg.files.sig
+          cp ${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz ${{ env.arch_repo_dir }}/linux-tkg.db
+          cp ${{ env.arch_repo_dir }}/linux-tkg.db.tar.gz.sig ${{ env.arch_repo_dir }}/linux-tkg.db.sig
+          cp ${{ env.arch_repo_dir }}/linux-tkg.files.tar.gz ${{ env.arch_repo_dir }}/linux-tkg.files
+          cp ${{ env.arch_repo_dir }}/linux-tkg.files.tar.gz.sig ${{ env.arch_repo_dir }}/linux-tkg.files.sig
+
+      - name: Pre commit setup
+        run: git config --global --add safe.directory /__w/linux-tkg-repo/linux-tkg-repo
+        
+      - name: Commit updated package list database
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Push updated package list database"
+          git pull --rebase
+          git push
