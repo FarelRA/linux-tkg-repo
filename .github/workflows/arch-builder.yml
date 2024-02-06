@@ -5,7 +5,7 @@ on:
   workflow_call:
     inputs:
       _cpusched:
-        required: true
+        required: false
         type: string
       database:
         required: false
@@ -13,12 +13,12 @@ on:
 
   workflow_dispatch: # on button click
       inputs:
-      _cpusched:
-        required: true
-        type: string
-      database:
-        required: false
-        type: string
+        _cpusched:
+          required: false
+          type: string
+        database:
+          required: false
+          type: string
 
 env:
   _distro: "Arch"
