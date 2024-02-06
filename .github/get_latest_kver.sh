@@ -8,12 +8,14 @@ function msg2() {
 # Get the script's directory
 SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 
-# Define supported kernel versions
-supported_kernels=(
-  6.8 6.7 6.6 6.5 6.4 6.1 5.15
-  # EOL kernels
-  6.3 6.2 6.0 5.19 5.18 5.17 5.16 5.14 5.13 5.12 5.11 5.9 5.8 5.7 5.4.230 5.10.135
+# Get kernel versions list from the official linux-tkg repo
+source <(\
+  curl https://raw.githubusercontent.com/Frogging-Family/linux-tkg/master/linux-tkg-config/prepare | \
+  grep -E '^_(current|eol)_kernels=\('\
 )
+
+# Combine extracted variables into a single array
+supported_kernels=("${_current_kernels[@]}" "${_eol_kernels[@]}")
 
 # Define available Git mirrors for the Linux kernel
 typeset -Ag kernel_git_remotes
