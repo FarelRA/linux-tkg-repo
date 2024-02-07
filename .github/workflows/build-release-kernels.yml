@@ -7,7 +7,6 @@ on:
   workflow_dispatch:
     
 env:
-  max_old_release: "8" # Two for each scheduler
   arch_main_x86_64: "linux-tkg-repo/archlinux/main/x86_64"
   arch_archive_x86_64: "linux-tkg-repo/archlinux/archive/x86_64"
   debian_main_x86_64: "linux-tkg-repo/debian/main/x86_64"
@@ -66,6 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       checkout_path: "linux-tkg-repo"
+      max_archived_kernel: "8"  # Two for each scheduler
+      max_main_kernel: "4"      # One for each scheduler
     needs:
       - "check-for-newer-kernel"
       - "build"
@@ -107,37 +108,45 @@ jobs:
             ${{ env.debian_main_x86_64 }} \
             ${{ env.fedora_main_x86_64 }}
 
-          cp  ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst      ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst     ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst    ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst      ${{ env.arch_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb        ${{ env.debian_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb       ${{ env.debian_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb      ${{ env.debian_main_x86_64 }}
-          cp  ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb        ${{ env.debian_main_x86_64 }}
-          #cp ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-          #cp ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm       ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-          #cp ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm      ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-          #cp ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm        ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
+          cp \ 
+            ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst \   
+            ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst \
+            ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst \
+            ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst \
+            ${{ env.arch_main_x86_64 }}
+          cp \
+            ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb \
+            ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb \
+            ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb \
+            ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb \
+            ${{ env.debian_main_x86_64 }}
+          #cp \
+          #  ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm \
+          #  ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm \
+          #  ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm \
+          #  ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm \
+          #  ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
 
-      - name: Delete old kernel
+      - name: Managing old kernel
         run: |
           # Set variable
-          max_files=${{ env.max_old_release }}
+          max_archived_kernel=${{ env.max_archived_kernel }}
+          max_main_kernel=${{ env.max_main_kernel }}
 
           # Function to manage files in a specific directory
           manage_archive_directory() {
             local directory="$1"
             local filter_pattern="$2"
             local action_commands="$3"
-
+            local max_files="$4"
+            
             files=($(ls -1 "$directory" | eval "$filter_pattern" | sort))
           
             if [ "${#files[@]}" -gt "$max_files" ]; then
-              excess_files=( "${files[@]:$(($max_files - 4))}" )
+              excess_files=( "${files[@]:$max_files}" )
               for file in "${excess_files[@]}"; do
-                eval "$action_commands"
                 echo "Managing archived kernel file in $directory: $file"
+                eval "$action_commands" || echo "Command failled to execute properly"
               done
               echo "Finished managing files in $directory matching pattern: $filter_pattern"
             fi
@@ -155,20 +164,28 @@ jobs:
             ${{ env.fedora_archive_x86_64 }}
 
           # Manage each directory with its specific filter pattern and action commands
-          manage_archive_directory  "${{ env.arch_archive_x86_64 }}"      "grep linux | grep -v headers"      "rm -f '$directory/$file'"
-          manage_archive_directory  "${{ env.arch_archive_x86_64 }}"      "grep linux | grep headers"         "rm -f '$directory/$file'"
-          manage_archive_directory  "${{ env.debian_archive_x86_64 }}"    "grep linux-image"                  "rm -f '$directory/$file'"
-          manage_archive_directory  "${{ env.debian_archive_x86_64 }}"    "grep linux-headers"                "rm -f '$directory/$file'"
-          manage_archive_directory  "${{ env.fedora_archive_x86_64 }}"    "grep kernel | grep -v devel"       "rm -f '$directory/$file'"
-          manage_archive_directory  "${{ env.fedora_archive_x86_64 }}"    "grep kernel-devel"                 "rm -f '$directory/$file'"
 
-          manage_archive_directory  "${{ env.arch_main_x86_64 }}"         "grep linux | grep -v headers"      "mv -f '$directory/$file' ${{ env.arch_archive_x86_64 }}"
-          manage_archive_directory  "${{ env.arch_main_x86_64 }}"         "grep linux | grep headers"         "mv -f '$directory/$file' ${{ env.arch_archive_x86_64 }}"
-          manage_archive_directory  "${{ env.debian_main_x86_64 }}"       "grep linux-image"                  "mv -f '$directory/$file' ${{ env.debian_archive_x86_64 }}"
-          manage_archive_directory  "${{ env.debian_main_x86_64 }}"       "grep linux-headers"                "mv -f '$directory/$file' ${{ env.debian_archive_x86_64 }}"
-          manage_archive_directory  "${{ env.fedora_main_x86_64 }}"       "grep kernel | grep -v devel"       "mv -f '$directory/$file' ${{ env.fedora_archive_x86_64 }}"
-          manage_archive_directory  "${{ env.fedora_main_x86_64 }}"       "grep kernel-devel"                 "mv -f '$directory/$file' ${{ env.fedora_archive_x86_64 }}"
+          # Remove old archived kernel
+          manage_archive_directory  "${{ env.arch_archive_x86_64 }}"      "grep linux | grep --regexp 'headers|db|files' -v"      "rm -f '$directory/$file'"  "$(( $max_archived_kernel * 2 ))"  # Including .sig files
+          manage_archive_directory  "${{ env.arch_archive_x86_64 }}"      "grep linux | grep headers"         "rm -f '$directory/$file'"  "$(( $max_archived_kernel * 2 ))"                      # Including .sig files
+          manage_archive_directory  "${{ env.debian_archive_x86_64 }}"    "grep linux-image"                  "rm -f '$directory/$file'"  "$max_archived_kernel"
+          manage_archive_directory  "${{ env.debian_archive_x86_64 }}"    "grep linux-headers"                "rm -f '$directory/$file'"  "$max_archived_kernel"
+          manage_archive_directory  "${{ env.fedora_archive_x86_64 }}"    "grep kernel | grep -v devel"       "rm -f '$directory/$file'"  "$max_archived_kernel"
+          manage_archive_directory  "${{ env.fedora_archive_x86_64 }}"    "grep kernel-devel"                 "rm -f '$directory/$file'"  "$max_archived_kernel"
+
+          # Move old main kernel to archived kernel
+          manage_archive_directory  "${{ env.arch_main_x86_64 }}"         "grep linux | grep --regexp 'headers|db|files' -v"      "mv -f '$directory/$file' ${{ env.arch_archive_x86_64 }}"  "$(( $max_main_kernel * 2 ))"  # Including .sig files
+          manage_archive_directory  "${{ env.arch_main_x86_64 }}"         "grep linux | grep headers"         "mv -f '$directory/$file' ${{ env.arch_archive_x86_64 }}"    "$(( $max_main_kernel * 2 ))"                    # Including .sig files
+          manage_archive_directory  "${{ env.debian_main_x86_64 }}"       "grep linux-image"                  "mv -f '$directory/$file' ${{ env.debian_archive_x86_64 }}"  "$max_main_kernel"
+          manage_archive_directory  "${{ env.debian_main_x86_64 }}"       "grep linux-headers"                "mv -f '$directory/$file' ${{ env.debian_archive_x86_64 }}"  "$max_main_kernel"
+          manage_archive_directory  "${{ env.fedora_main_x86_64 }}"       "grep kernel | grep -v devel"       "mv -f '$directory/$file' ${{ env.fedora_archive_x86_64 }}"  "$max_main_kernel"
+          manage_archive_directory  "${{ env.fedora_main_x86_64 }}"       "grep kernel-devel"                 "mv -f '$directory/$file' ${{ env.fedora_archive_x86_64 }}"  "$max_main_kernel"
           
+          # Move old main kernel databases to archived kernel
+          mv "${{ env.arch_main_x86_64 }}/*.db*" "${{ env.arch_main_x86_64 }}/*.files*" "${{ env.arch_archive_x86_64 }}"            || echo "There is no old main kernel databases"
+          mv "${{ env.debian_main_x86_64 }}/Packages*" "${{ env.debian_main_x86_64 }}/*Release" "${{ env.debian_archive_x86_64 }}"  || echo "There is no old main kernel databases"
+          # Don't know yet about Fedora
+
       - name: Commit new kernel release
         run: |
           cd ${{ env.checkout_path }}
