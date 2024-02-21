@@ -104,29 +104,34 @@ jobs:
         run: |
           # Create directories if they don't exist
           mkdir -p \
-            ${{ env.arch_main_x86_64 }} \
-            ${{ env.debian_main_x86_64 }} \
-            ${{ env.fedora_main_x86_64 }}
-
-          cp \ 
-            ${{ github.workspace }}/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst \   
-            ${{ github.workspace }}/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst \
-            ${{ github.workspace }}/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst \
-            ${{ github.workspace }}/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst \
-            ${{ env.arch_main_x86_64 }}
+            linux-tkg-repo/archlinux/main/x86_64 \
+            linux-tkg-repo/debian/main/x86_64 \
+            linux-tkg-repo/fedora/main/x86_64
+          
+          # Copy Arch kernel packages
           cp \
-            ${{ github.workspace }}/ubuntu-kernel-packages-bmq/DEBS/*.deb \
-            ${{ github.workspace }}/ubuntu-kernel-packages-bore/DEBS/*.deb \
-            ${{ github.workspace }}/ubuntu-kernel-packages-eevdf/DEBS/*.deb \
-            ${{ github.workspace }}/ubuntu-kernel-packages-pds/DEBS/*.deb \
-            ${{ env.debian_main_x86_64 }}
-          #cp \
-          #  ${{ github.workspace }}/fedora-kernel-packages-bmq/RPMS/*.rpm \
-          #  ${{ github.workspace }}/fedora-kernel-packages-bore/RPMS/*.rpm \
-          #  ${{ github.workspace }}/fedora-kernel-packages-eevdf/RPMS/*.rpm \
-          #  ${{ github.workspace }}/fedora-kernel-packages-pds/RPMS/*.rpm \
-          #  ${{ env.fedora_main_x86_64 }} # temporarily disable fedora
-
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/arch-kernel-packages-bmq/tmp/linux-tkg/linux*.pkg.tar.zst \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/arch-kernel-packages-bore/tmp/linux-tkg/linux*.pkg.tar.zst \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/arch-kernel-packages-eevdf/tmp/linux-tkg/linux*.pkg.tar.zst \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/arch-kernel-packages-pds/tmp/linux-tkg/linux*.pkg.tar.zst \
+            ./linux-tkg-repo/archlinux/main/x86_64/
+        
+          # Copy Ubuntu kernel packages
+          cp \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/ubuntu-kernel-packages-bmq/DEBS/*.deb \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/ubuntu-kernel-packages-bore/DEBS/*.deb \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/ubuntu-kernel-packages-eevdf/DEBS/*.deb \
+            /home/runner/work/linux-tkg-repo/linux-tkg-repo/ubuntu-kernel-packages-pds/DEBS/*.deb \
+            ./linux-tkg-repo/debian/main/x86_64/
+        
+          # Copy Fedora kernel packages (uncomment if needed)
+          # cp \
+          #   /home/runner/work/linux-tkg-repo/linux-tkg-repo/fedora-kernel-packages-bmq/RPMS/*.rpm \
+          #   /home/runner/work/linux-tkg-repo/linux-tkg-repo/fedora-kernel-packages-bore/RPMS/*.rpm \
+          #   /home/runner/work/linux-tkg-repo/linux-tkg-repo/fedora-kernel-packages-eevdf/RPMS/*.rpm \
+          #   /home/runner/work/linux-tkg-repo/linux-tkg-repo/fedora-kernel-packages-pds/RPMS/*.rpm \
+          #   ./linux-tkg-repo/fedora/main/x86_64/
+      
       - name: Managing old kernel
         run: |
           # Set variable
