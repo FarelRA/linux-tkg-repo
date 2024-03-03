@@ -226,6 +226,82 @@ Description: Linux kernel headers for 6.7.7-tkg-pds on amd64
  .
  This is useful for people who need to build external modules
 
+Package: linux-headers-6.7.8-tkg-bmq
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az847-287>
+Installed-Size: 53323
+Filename: ./debian/main/x86_64/linux-headers-6.7.8-tkg-bmq_6.7.8-1_amd64.deb
+Size: 9291172
+MD5sum: c8e25b76f1f33fb4704c7ff173f80e21
+SHA1: 7f3843391098d96bf64a846000191d3db9985aac
+SHA256: 4ba713c46bb4f645369b56d82e89db0051e21a8de755fa5ff2f6bff608df442e
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.7.8-tkg-bmq on amd64
+ This package provides kernel header files for 6.7.8-tkg-bmq on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.7.8-tkg-bore
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1429-514.yiaga5qy33te3l4zvvaow0wupa.dx.internal.cloudapp.net>
+Installed-Size: 53337
+Filename: ./debian/main/x86_64/linux-headers-6.7.8-tkg-bore_6.7.8-1_amd64.deb
+Size: 9291164
+MD5sum: 60bc56275a8b6c897dc29c5151740bfe
+SHA1: c5584fc7ed2afa5e86b21ab65dd2f5725ee21c74
+SHA256: 8d83497f4de7c3c98d518298684c9d56b70b2ed34b3d0c192aa7cb8c0a3d5b85
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.7.8-tkg-bore on amd64
+ This package provides kernel header files for 6.7.8-tkg-bore on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.7.8-tkg-eevdf
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az702-67.chqnz2sh3uyunc45c2qut5txpa.cx.internal.cloudapp.net>
+Installed-Size: 53347
+Filename: ./debian/main/x86_64/linux-headers-6.7.8-tkg-eevdf_6.7.8-1_amd64.deb
+Size: 9288926
+MD5sum: c12010f5990d1bc2577c0d587f536851
+SHA1: 4ba1a9021af886d6533747da9bcc22f0f73fd09f
+SHA256: 42837cc0f43416ca2fac2a70656c2708133b1eafcb05fe560a4369175f6ddd3d
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.7.8-tkg-eevdf on amd64
+ This package provides kernel header files for 6.7.8-tkg-eevdf on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.7.8-tkg-pds
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1382-898>
+Installed-Size: 53323
+Filename: ./debian/main/x86_64/linux-headers-6.7.8-tkg-pds_6.7.8-1_amd64.deb
+Size: 9292422
+MD5sum: d9526d3e0d6f84df33349b96d6daf9e9
+SHA1: 228ef025fc044a025d8f3d3b771a56f814703c90
+SHA256: baafcbb149950be42b1acdc75e03ca05f88c8c7cc1bb45125792f68540c9c77f
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.7.8-tkg-pds on amd64
+ This package provides kernel header files for 6.7.8-tkg-pds on amd64
+ .
+ This is useful for people who need to build external modules
+
 Package: linux-image-6.7.5-tkg-bmq
 Source: linux-upstream
 Version: 6.7.5-1
@@ -441,4 +517,76 @@ Homepage: https://www.kernel.org/
 Description: Linux kernel, version 6.7.7-tkg-pds
  This package contains the Linux kernel, modules and corresponding other
  files, version: 6.7.7-tkg-pds.
+
+Package: linux-image-6.7.8-tkg-bmq
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az847-287>
+Installed-Size: 161770
+Filename: ./debian/main/x86_64/linux-image-6.7.8-tkg-bmq_6.7.8-1_amd64.deb
+Size: 36178808
+MD5sum: 6df04fcec4e092ee57f205346dc4c55c
+SHA1: 3938a1257c919663ec2ec77e2bb539e7ccbbe222
+SHA256: 41ffad2f70c23baee7cc4cb03caf9ca1113bbf2608793786487221c09d34cf71
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.7.8-tkg-bmq
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.7.8-tkg-bmq.
+
+Package: linux-image-6.7.8-tkg-bore
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1429-514.yiaga5qy33te3l4zvvaow0wupa.dx.internal.cloudapp.net>
+Installed-Size: 161939
+Filename: ./debian/main/x86_64/linux-image-6.7.8-tkg-bore_6.7.8-1_amd64.deb
+Size: 36352412
+MD5sum: 6f6f199e433e82a9d38a1390996ef3d5
+SHA1: 14f59e91069acb4b276444b4853af6413e4925b6
+SHA256: a80c1c05ca469bb88cc5e4494957aa6de608eb3f967a4c83b7cfb0fce9848220
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.7.8-tkg-bore
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.7.8-tkg-bore.
+
+Package: linux-image-6.7.8-tkg-eevdf
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az702-67.chqnz2sh3uyunc45c2qut5txpa.cx.internal.cloudapp.net>
+Installed-Size: 161931
+Filename: ./debian/main/x86_64/linux-image-6.7.8-tkg-eevdf_6.7.8-1_amd64.deb
+Size: 36313454
+MD5sum: 4c6d4b6ff0e827efc747a2cfb5168f6d
+SHA1: 75b6e2253c4df2cc09dba6143dd45e338a379d00
+SHA256: a673f71a44b82d1ce05fdd12bb455b4c3cc9554cb1803712fd9275c2abeae912
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.7.8-tkg-eevdf
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.7.8-tkg-eevdf.
+
+Package: linux-image-6.7.8-tkg-pds
+Source: linux-upstream
+Version: 6.7.8-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1382-898>
+Installed-Size: 161766
+Filename: ./debian/main/x86_64/linux-image-6.7.8-tkg-pds_6.7.8-1_amd64.deb
+Size: 36131732
+MD5sum: fc7487e40983f3fd43e0ee16067079b0
+SHA1: 99a670de5f0261476a4ca24f69f2c0cdcb1eb8a4
+SHA256: e29ea0085a3e57bdbac14c3ba6c961bfc48e7ce6b1f6557129a728b693e69de3
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.7.8-tkg-pds
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.7.8-tkg-pds.
 
