@@ -52,7 +52,7 @@ jobs:
         run: dnf install git -y
 
       - name: Checkount linux-tkg
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
         with:
           repository: 'Frogging-Family/linux-tkg'
 
@@ -99,7 +99,7 @@ jobs:
         run: dnf install git createrepo -y
 
       - name: Checkount linux-tkg-repo
-        uses: actions/checkout@v4.1.1
+        uses: actions/checkout@v4.1.2
 
       - name: Post checkuot setup
         run: |
