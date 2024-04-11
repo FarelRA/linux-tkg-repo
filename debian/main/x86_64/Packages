@@ -454,6 +454,82 @@ Description: Linux kernel headers for 6.8.4-tkg-pds on amd64
  .
  This is useful for people who need to build external modules
 
+Package: linux-headers-6.8.5-tkg-bmq
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1118-854.jboa14ee0bjuvjv5ua334yvpdd.cx.internal.cloudapp.net>
+Installed-Size: 52797
+Filename: ./debian/main/x86_64/linux-headers-6.8.5-tkg-bmq_6.8.5-1_amd64.deb
+Size: 9356406
+MD5sum: 3136680ebb1c96df36135ab93b3b980f
+SHA1: c693f3a20218e7f003e489ead35a75bda891cbe2
+SHA256: 11f31e32daa32ee9ee59c4d5be6b1907c41bab3dec0516fdab77b6b9067f25cf
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.8.5-tkg-bmq on amd64
+ This package provides kernel header files for 6.8.5-tkg-bmq on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.8.5-tkg-bore
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az665-93>
+Installed-Size: 52798
+Filename: ./debian/main/x86_64/linux-headers-6.8.5-tkg-bore_6.8.5-1_amd64.deb
+Size: 9356584
+MD5sum: 2974bcee5e1049073233b7fc2a3121fc
+SHA1: c7d2fd83bacd89fe5fd74e97ecdd768bae822a15
+SHA256: 437ea1df6e46f515a60f611e77a0e0b81d64b3d748fac19659104954ed3578ee
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.8.5-tkg-bore on amd64
+ This package provides kernel header files for 6.8.5-tkg-bore on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.8.5-tkg-eevdf
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az887-658.elnf45sohryeljqptybdtvknwa.bx.internal.cloudapp.net>
+Installed-Size: 52798
+Filename: ./debian/main/x86_64/linux-headers-6.8.5-tkg-eevdf_6.8.5-1_amd64.deb
+Size: 9357604
+MD5sum: be1cd8a85792bf6bef8079da066402dc
+SHA1: b0cbc68346b3de018211b789fa7d545f322509be
+SHA256: b00abd178ba4357c329a3cca4f14af394a5904dd7e66869a536417ae908b31ce
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.8.5-tkg-eevdf on amd64
+ This package provides kernel header files for 6.8.5-tkg-eevdf on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.8.5-tkg-pds
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1247-801.grvplcbrxqwulonopmolb0o12f.dx.internal.cloudapp.net>
+Installed-Size: 52797
+Filename: ./debian/main/x86_64/linux-headers-6.8.5-tkg-pds_6.8.5-1_amd64.deb
+Size: 9355898
+MD5sum: 80487c2aeb39eb9e1d0ea5b822c32160
+SHA1: 1147cabd6483097a835ec8871c1f606d079d48c7
+SHA256: ce60d753ddda12bef2e7147987c0282c40b78164b8730c81932b1782a081e325
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.8.5-tkg-pds on amd64
+ This package provides kernel header files for 6.8.5-tkg-pds on amd64
+ .
+ This is useful for people who need to build external modules
+
 Package: linux-image-6.7.7-tkg-bmq
 Source: linux-upstream
 Version: 6.7.7-1
@@ -885,4 +961,76 @@ Homepage: https://www.kernel.org/
 Description: Linux kernel, version 6.8.4-tkg-pds
  This package contains the Linux kernel, modules and corresponding other
  files, version: 6.8.4-tkg-pds.
+
+Package: linux-image-6.8.5-tkg-bmq
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1118-854.jboa14ee0bjuvjv5ua334yvpdd.cx.internal.cloudapp.net>
+Installed-Size: 162548
+Filename: ./debian/main/x86_64/linux-image-6.8.5-tkg-bmq_6.8.5-1_amd64.deb
+Size: 36263896
+MD5sum: 207b97b07247820663a8c86dd91f5ea5
+SHA1: 05f6a36e1553249c33e0a096b9e5b1042e9b463f
+SHA256: 9320663f57317f1e5818b5b503eea22f074a4e4f8f3845342f6f96c94b07efa2
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.8.5-tkg-bmq
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.8.5-tkg-bmq.
+
+Package: linux-image-6.8.5-tkg-bore
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az665-93>
+Installed-Size: 162709
+Filename: ./debian/main/x86_64/linux-image-6.8.5-tkg-bore_6.8.5-1_amd64.deb
+Size: 36507180
+MD5sum: a2e005e0fed36c374e89ff25f4531213
+SHA1: 4b4cfa6345a0dea3634fbb3535e64b9fe63358a0
+SHA256: 1b22544c13abf361f7e1a1331ff7a440eda536cbdf2b14ce15ed231cd1a3ca5c
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.8.5-tkg-bore
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.8.5-tkg-bore.
+
+Package: linux-image-6.8.5-tkg-eevdf
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az887-658.elnf45sohryeljqptybdtvknwa.bx.internal.cloudapp.net>
+Installed-Size: 162709
+Filename: ./debian/main/x86_64/linux-image-6.8.5-tkg-eevdf_6.8.5-1_amd64.deb
+Size: 36495482
+MD5sum: 9cc01096e63b8d0dfc8b39ebe10c9ecc
+SHA1: cb1c622d7995c4f1ff1759cf4083b2665f94cde4
+SHA256: eb0145fc0dbfe0e5b0b04d8499c85e2e5bdcd9fdefa794b9fc74497f17690b18
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.8.5-tkg-eevdf
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.8.5-tkg-eevdf.
+
+Package: linux-image-6.8.5-tkg-pds
+Source: linux-upstream
+Version: 6.8.5-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1247-801.grvplcbrxqwulonopmolb0o12f.dx.internal.cloudapp.net>
+Installed-Size: 162552
+Filename: ./debian/main/x86_64/linux-image-6.8.5-tkg-pds_6.8.5-1_amd64.deb
+Size: 36198704
+MD5sum: 0d2b06aa4147a788071d8cb17b360615
+SHA1: a178cff11b6afc40b174f51849bbaf33be9f3315
+SHA256: 406e18b9b62e3b214f5ca3af2d5b2f40d284154dd50ba2026946ec103a9aef13
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.8.5-tkg-pds
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.8.5-tkg-pds.
 
