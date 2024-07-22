@@ -48,7 +48,7 @@ jobs:
 
     steps:
       - name: Checkount linux-tkg
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.7
         with:
           repository: 'Frogging-Family/linux-tkg'
 
@@ -93,7 +93,7 @@ jobs:
         run: sudo apt-get install -y dpkg-dev gpg
 
       - name: Checkount linux-tkg-repo
-        uses: actions/checkout@v4.1.2
+        uses: actions/checkout@v4.1.7
 
       - name: Post checkuot setup
         run: |
