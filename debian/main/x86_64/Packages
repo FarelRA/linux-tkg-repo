@@ -1,3 +1,79 @@
+Package: linux-headers-6.10.10-tkg-bmq
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az575-208.txkdwr3xd4ruhezurzmahy12zg.cx.internal.cloudapp.net>
+Installed-Size: 53639
+Filename: ./debian/main/x86_64/linux-headers-6.10.10-tkg-bmq_6.10.10-1_amd64.deb
+Size: 9478498
+MD5sum: 311a582e44087a4c15392c89bfcfafcc
+SHA1: 6a6fa2de808dcdca98ac5ce6bd9fea65421186c8
+SHA256: 6f70e320086ab12ffecbd10fefb08d05d1f4188be13b1e036dca8acb56b22107
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.10.10-tkg-bmq on amd64
+ This package provides kernel header files for 6.10.10-tkg-bmq on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.10.10-tkg-bore
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az881-973.kxqfgnpkrxgetcyd3drl2yrtfd.ex.internal.cloudapp.net>
+Installed-Size: 53643
+Filename: ./debian/main/x86_64/linux-headers-6.10.10-tkg-bore_6.10.10-1_amd64.deb
+Size: 9478118
+MD5sum: 3e38328fe3d234fa5cda1625a1d5725e
+SHA1: 46f9dda509905b1f69ec2645534cdce708b19152
+SHA256: 4dfa1d2d2f89f8386ecd419e87c8c5eba19b64c41b0bc175a90f9d92d54a40e1
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.10.10-tkg-bore on amd64
+ This package provides kernel header files for 6.10.10-tkg-bore on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.10.10-tkg-eevdf
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1773-824.5c5iphqueiuuvdxclnr0txjlua.dx.internal.cloudapp.net>
+Installed-Size: 53651
+Filename: ./debian/main/x86_64/linux-headers-6.10.10-tkg-eevdf_6.10.10-1_amd64.deb
+Size: 9480126
+MD5sum: 1a07ac301cc6e27085d7f97025f19942
+SHA1: 692fa45579378dd649320bb80fb05faf4e4682df
+SHA256: 30353d31850edfbc5ea41271907ae6ee94d3af474388e6362e3bdeed4e1e04bd
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.10.10-tkg-eevdf on amd64
+ This package provides kernel header files for 6.10.10-tkg-eevdf on amd64
+ .
+ This is useful for people who need to build external modules
+
+Package: linux-headers-6.10.10-tkg-pds
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az732-335.4opwuzrh3q5ejjryiebefgsz5f.ex.internal.cloudapp.net>
+Installed-Size: 53639
+Filename: ./debian/main/x86_64/linux-headers-6.10.10-tkg-pds_6.10.10-1_amd64.deb
+Size: 9480694
+MD5sum: c21b63dbdefcbd2de9a40c973bd78a27
+SHA1: 42a71679d7c834da10436eb0aff66169b32703cc
+SHA256: d8de24a3988cbe29c66eca17f46b2fe7cb2d74838ac4403cf98ead342bf96532
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel headers for 6.10.10-tkg-pds on amd64
+ This package provides kernel header files for 6.10.10-tkg-pds on amd64
+ .
+ This is useful for people who need to build external modules
+
 Package: linux-headers-6.10.7-tkg-bmq
 Source: linux-upstream
 Version: 6.10.7-1
@@ -225,6 +301,78 @@ Description: Linux kernel headers for 6.10.9-tkg-pds on amd64
  This package provides kernel header files for 6.10.9-tkg-pds on amd64
  .
  This is useful for people who need to build external modules
+
+Package: linux-image-6.10.10-tkg-bmq
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az575-208.txkdwr3xd4ruhezurzmahy12zg.cx.internal.cloudapp.net>
+Installed-Size: 170273
+Filename: ./debian/main/x86_64/linux-image-6.10.10-tkg-bmq_6.10.10-1_amd64.deb
+Size: 37881398
+MD5sum: e745ba9b1cccef5c3da1cc20be1fbc2c
+SHA1: c1e7a8c58bef9f47f746b2fc0c4fb5fc8b50e73d
+SHA256: 51a2092cef542db4b308f9bb936dc8eb9d5871e6ba53e89b472fc68ebd4df4ba
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.10.10-tkg-bmq
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.10.10-tkg-bmq.
+
+Package: linux-image-6.10.10-tkg-bore
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az881-973.kxqfgnpkrxgetcyd3drl2yrtfd.ex.internal.cloudapp.net>
+Installed-Size: 170539
+Filename: ./debian/main/x86_64/linux-image-6.10.10-tkg-bore_6.10.10-1_amd64.deb
+Size: 38012036
+MD5sum: e87bb67778729cd1718838854014b56b
+SHA1: f2682aa0c811ac00755f75352449aa3fb1508757
+SHA256: 2e8945ec086d5b38589fe159c0c0343110f328ce7633cf4cb4aac918386ade52
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.10.10-tkg-bore
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.10.10-tkg-bore.
+
+Package: linux-image-6.10.10-tkg-eevdf
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az1773-824.5c5iphqueiuuvdxclnr0txjlua.dx.internal.cloudapp.net>
+Installed-Size: 170539
+Filename: ./debian/main/x86_64/linux-image-6.10.10-tkg-eevdf_6.10.10-1_amd64.deb
+Size: 38008560
+MD5sum: 9ff9b34ccb4664fed3031558d355a676
+SHA1: 213d9caf4a8029f3134d22c03b58d0e306cc989f
+SHA256: 9f62fd2d4fe48828c12d018c1ece8a3b222f05e4f6b8e0740530bd1d1c22a4f1
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.10.10-tkg-eevdf
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.10.10-tkg-eevdf.
+
+Package: linux-image-6.10.10-tkg-pds
+Source: linux-upstream
+Version: 6.10.10-1
+Architecture: amd64
+Maintainer: runner <runner@fv-az732-335.4opwuzrh3q5ejjryiebefgsz5f.ex.internal.cloudapp.net>
+Installed-Size: 170269
+Filename: ./debian/main/x86_64/linux-image-6.10.10-tkg-pds_6.10.10-1_amd64.deb
+Size: 37896084
+MD5sum: 518499f33e3654741f5e56cbaa98b2a4
+SHA1: 897dd78458fc7c92839bbbb6d4b6e1de8ee6948f
+SHA256: d53bd9f935b7fee4648900ea12c9fb65f1fb1e001553d19f63abb9e5dd67a32f
+Section: kernel
+Priority: optional
+Homepage: https://www.kernel.org/
+Description: Linux kernel, version 6.10.10-tkg-pds
+ This package contains the Linux kernel, modules and corresponding other
+ files, version: 6.10.10-tkg-pds.
 
 Package: linux-image-6.10.7-tkg-bmq
 Source: linux-upstream
